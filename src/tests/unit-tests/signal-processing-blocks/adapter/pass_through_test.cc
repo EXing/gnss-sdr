@@ -36,9 +36,7 @@
 #include "in_memory_configuration.h"
 
 
-
-TEST(Pass_Through_Test, Instantiate)
-{
+TEST(Pass_Through_Test, Instantiate) {
     std::shared_ptr<ConfigurationInterface> config = std::make_shared<InMemoryConfiguration>();
     config->set_property("Test.item_type", "gr_complex");
     config->set_property("Test.vector_size", "2");

@@ -32,8 +32,6 @@
 
 #include "beidou_b1i_signal_processing.h"
 #include "BEIDOU_B1I.h"
-#include <stdlib.h>
-#include <cmath>
 
 auto auxCeil = [](float x) { return static_cast<int>(static_cast<long>((x) + 1)); };
 

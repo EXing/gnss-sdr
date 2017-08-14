@@ -67,52 +67,50 @@
 // ######## GNURADIO BLOCK MESSAGE RECEVER FOR TRACKING MESSAGES #########
 class GpsL1CADllPllTelemetryDecoderTest_msg_rx;
 
-typedef boost::shared_ptr<GpsL1CADllPllTelemetryDecoderTest_msg_rx> GpsL1CADllPllTelemetryDecoderTest_msg_rx_sptr;
+typedef boost::shared_ptr <GpsL1CADllPllTelemetryDecoderTest_msg_rx> GpsL1CADllPllTelemetryDecoderTest_msg_rx_sptr;
 
 GpsL1CADllPllTelemetryDecoderTest_msg_rx_sptr GpsL1CADllPllTelemetryDecoderTest_msg_rx_make();
 
-class GpsL1CADllPllTelemetryDecoderTest_msg_rx : public gr::block
-{
+class GpsL1CADllPllTelemetryDecoderTest_msg_rx : public gr::block {
 private:
     friend GpsL1CADllPllTelemetryDecoderTest_msg_rx_sptr GpsL1CADllPllTelemetryDecoderTest_msg_rx_make();
+
     void msg_handler_events(pmt::pmt_t msg);
+
     GpsL1CADllPllTelemetryDecoderTest_msg_rx();
 
 public:
     int rx_message;
+
     ~GpsL1CADllPllTelemetryDecoderTest_msg_rx(); //!< Default destructor
 
 };
 
-GpsL1CADllPllTelemetryDecoderTest_msg_rx_sptr GpsL1CADllPllTelemetryDecoderTest_msg_rx_make()
-{
+GpsL1CADllPllTelemetryDecoderTest_msg_rx_sptr GpsL1CADllPllTelemetryDecoderTest_msg_rx_make() {
     return GpsL1CADllPllTelemetryDecoderTest_msg_rx_sptr(new GpsL1CADllPllTelemetryDecoderTest_msg_rx());
 }
 
-void GpsL1CADllPllTelemetryDecoderTest_msg_rx::msg_handler_events(pmt::pmt_t msg)
-{
-    try
-    {
-            long int message = pmt::to_long(msg);
-            rx_message = message;
+void GpsL1CADllPllTelemetryDecoderTest_msg_rx::msg_handler_events(pmt::pmt_t msg) {
+    try {
+        long int message = pmt::to_long(msg);
+        rx_message = message;
     }
-    catch(boost::bad_any_cast& e)
-    {
-            LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
-            rx_message = 0;
+    catch (boost::bad_any_cast &e) {
+        LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
+        rx_message = 0;
     }
 }
 
 GpsL1CADllPllTelemetryDecoderTest_msg_rx::GpsL1CADllPllTelemetryDecoderTest_msg_rx() :
-            gr::block("GpsL1CADllPllTelemetryDecoderTest_msg_rx", gr::io_signature::make(0, 0, 0), gr::io_signature::make(0, 0, 0))
-{
+        gr::block("GpsL1CADllPllTelemetryDecoderTest_msg_rx", gr::io_signature::make(0, 0, 0),
+                  gr::io_signature::make(0, 0, 0)) {
     this->message_port_register_in(pmt::mp("events"));
-    this->set_msg_handler(pmt::mp("events"), boost::bind(&GpsL1CADllPllTelemetryDecoderTest_msg_rx::msg_handler_events, this, _1));
+    this->set_msg_handler(pmt::mp("events"),
+                          boost::bind(&GpsL1CADllPllTelemetryDecoderTest_msg_rx::msg_handler_events, this, _1));
     rx_message = 0;
 }
 
-GpsL1CADllPllTelemetryDecoderTest_msg_rx::~GpsL1CADllPllTelemetryDecoderTest_msg_rx()
-{}
+GpsL1CADllPllTelemetryDecoderTest_msg_rx::~GpsL1CADllPllTelemetryDecoderTest_msg_rx() {}
 
 
 // ###########################################################
@@ -121,59 +119,56 @@ GpsL1CADllPllTelemetryDecoderTest_msg_rx::~GpsL1CADllPllTelemetryDecoderTest_msg
 // ######## GNURADIO BLOCK MESSAGE RECEVER FOR TLM MESSAGES #########
 class GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx;
 
-typedef boost::shared_ptr<GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx> GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_sptr;
+typedef boost::shared_ptr <GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx> GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_sptr;
 
 GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_sptr GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_make();
 
-class GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx : public gr::block
-{
+class GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx : public gr::block {
 private:
     friend GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_sptr GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_make();
+
     void msg_handler_events(pmt::pmt_t msg);
+
     GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx();
 
 public:
     int rx_message;
+
     ~GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx(); //!< Default destructor
 
 };
 
-GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_sptr GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_make()
-{
+GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_sptr GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_make() {
     return GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_sptr(new GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx());
 }
 
-void GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx::msg_handler_events(pmt::pmt_t msg)
-{
-    try
-    {
-            long int message = pmt::to_long(msg);
-            rx_message = message;
+void GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx::msg_handler_events(pmt::pmt_t msg) {
+    try {
+        long int message = pmt::to_long(msg);
+        rx_message = message;
     }
-    catch(boost::bad_any_cast& e)
-    {
-            LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
-            rx_message = 0;
+    catch (boost::bad_any_cast &e) {
+        LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
+        rx_message = 0;
     }
 }
 
 GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx::GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx() :
-            gr::block("GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx", gr::io_signature::make(0, 0, 0), gr::io_signature::make(0, 0, 0))
-{
+        gr::block("GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx", gr::io_signature::make(0, 0, 0),
+                  gr::io_signature::make(0, 0, 0)) {
     this->message_port_register_in(pmt::mp("events"));
-    this->set_msg_handler(pmt::mp("events"), boost::bind(&GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx::msg_handler_events, this, _1));
+    this->set_msg_handler(pmt::mp("events"),
+                          boost::bind(&GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx::msg_handler_events, this, _1));
     rx_message = 0;
 }
 
-GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx::~GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx()
-{}
+GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx::~GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx() {}
 
 
 // ###########################################################
 
 
-class GpsL1CATelemetryDecoderTest: public ::testing::Test
-{
+class GpsL1CATelemetryDecoderTest : public ::testing::Test {
 
 public:
     std::string generator_binary;
@@ -189,78 +184,73 @@ public:
     std::string filename_raw_data = FLAGS_filename_raw_data;
 
     int configure_generator();
-    int generate_signal();
-    void check_results(arma::vec true_time_s,
-            arma::vec true_value,
-            arma::vec meas_time_s,
-            arma::vec meas_value);
 
-    GpsL1CATelemetryDecoderTest()
-    {
+    int generate_signal();
+
+    void check_results(arma::vec true_time_s,
+                       arma::vec true_value,
+                       arma::vec meas_time_s,
+                       arma::vec meas_value);
+
+    GpsL1CATelemetryDecoderTest() {
         factory = std::make_shared<GNSSBlockFactory>();
         config = std::make_shared<InMemoryConfiguration>();
         item_size = sizeof(gr_complex);
         gnss_synchro = Gnss_Synchro();
     }
 
-    ~GpsL1CATelemetryDecoderTest()
-    {}
+    ~GpsL1CATelemetryDecoderTest() {}
 
     void configure_receiver();
 
     gr::top_block_sptr top_block;
-    std::shared_ptr<GNSSBlockFactory> factory;
-    std::shared_ptr<InMemoryConfiguration> config;
+    std::shared_ptr <GNSSBlockFactory> factory;
+    std::shared_ptr <InMemoryConfiguration> config;
     Gnss_Synchro gnss_synchro;
     size_t item_size;
 };
 
-int GpsL1CATelemetryDecoderTest::configure_generator()
-{
+int GpsL1CATelemetryDecoderTest::configure_generator() {
     // Configure signal generator
     generator_binary = FLAGS_generator_binary;
 
     p1 = std::string("-rinex_nav_file=") + FLAGS_rinex_nav_file;
-    if(FLAGS_dynamic_position.empty())
-        {
-            p2 = std::string("-static_position=") + FLAGS_static_position + std::string(",") + std::to_string(FLAGS_duration * 10);
-        }
-    else
-        {
-            p2 = std::string("-obs_pos_file=") + std::string(FLAGS_dynamic_position);
-        }
+    if (FLAGS_dynamic_position.empty()) {
+        p2 = std::string("-static_position=") + FLAGS_static_position + std::string(",") +
+             std::to_string(FLAGS_duration * 10);
+    } else {
+        p2 = std::string("-obs_pos_file=") + std::string(FLAGS_dynamic_position);
+    }
     p3 = std::string("-rinex_obs_file=") + FLAGS_filename_rinex_obs; // RINEX 2.10 observation file output
-    p4 = std::string("-sig_out_file=") + FLAGS_filename_raw_data; // Baseband signal output file. Will be stored in int8_t IQ multiplexed samples
+    p4 = std::string("-sig_out_file=") +
+         FLAGS_filename_raw_data; // Baseband signal output file. Will be stored in int8_t IQ multiplexed samples
     p5 = std::string("-sampling_freq=") + std::to_string(baseband_sampling_freq); //Baseband sampling frequency [MSps]
     return 0;
 }
 
 
-int GpsL1CATelemetryDecoderTest::generate_signal()
-{
+int GpsL1CATelemetryDecoderTest::generate_signal() {
     int child_status;
 
-    char *const parmList[] = { &generator_binary[0], &generator_binary[0], &p1[0], &p2[0], &p3[0], &p4[0], &p5[0], NULL };
+    char *const parmList[] = {&generator_binary[0], &generator_binary[0], &p1[0], &p2[0], &p3[0], &p4[0], &p5[0], NULL};
 
     int pid;
     if ((pid = fork()) == -1)
         perror("fork err");
-    else if (pid == 0)
-        {
-            execv(&generator_binary[0], parmList);
-            std::cout << "Return not expected. Must be an execv err." << std::endl;
-            std::terminate();
-        }
+    else if (pid == 0) {
+        execv(&generator_binary[0], parmList);
+        std::cout << "Return not expected. Must be an execv err." << std::endl;
+        std::terminate();
+    }
 
     waitpid(pid, &child_status, 0);
 
-    std::cout << "Signal and Observables RINEX and RAW files created."  << std::endl;
+    std::cout << "Signal and Observables RINEX and RAW files created." << std::endl;
     return 0;
 }
 
 
-void GpsL1CATelemetryDecoderTest::configure_receiver()
-{
+void GpsL1CATelemetryDecoderTest::configure_receiver() {
     gnss_synchro.Channel_ID = 0;
     gnss_synchro.System = 'G';
     std::string signal = "1C";
@@ -278,16 +268,15 @@ void GpsL1CATelemetryDecoderTest::configure_receiver()
     config->set_property("Tracking_1C.dll_bw_hz", "1.5");
     config->set_property("Tracking_1C.early_late_space_chips", "0.5");
 
-    config->set_property("TelemetryDecoder_1C.dump","true");
-    config->set_property("TelemetryDecoder_1C.decimation_factor","1");
+    config->set_property("TelemetryDecoder_1C.dump", "true");
+    config->set_property("TelemetryDecoder_1C.decimation_factor", "1");
 
 }
 
 void GpsL1CATelemetryDecoderTest::check_results(arma::vec true_time_s,
-        arma::vec true_value,
-        arma::vec meas_time_s,
-        arma::vec meas_value)
-{
+                                                arma::vec true_value,
+                                                arma::vec meas_time_s,
+                                                arma::vec meas_value) {
     //1. True value interpolation to match the measurement times
 
     arma::vec true_value_interp;
@@ -312,155 +301,245 @@ void GpsL1CATelemetryDecoderTest::check_results(arma::vec true_time_s,
 
     std::cout << std::setprecision(10) << "TLM TOW RMSE="
               << rmse << ", mean=" << error_mean
-              << ", stdev=" << sqrt(error_var) << " (max,min)=" << max_error << "," << min_error << " [Chips]" << std::endl;
+              << ", stdev=" << sqrt(error_var) << " (max,min)=" << max_error << "," << min_error << " [Chips]"
+              << std::endl;
 
 }
 
-TEST_F(GpsL1CATelemetryDecoderTest, ValidationOfResults)
+TEST_F(GpsL1CATelemetryDecoderTest, ValidationOfResults
+)
 {
-    // Configure the signal generator
-    configure_generator();
+// Configure the signal generator
+configure_generator();
 
-    // Generate signal raw signal samples and observations RINEX file
-    generate_signal();
+// Generate signal raw signal samples and observations RINEX file
+generate_signal();
 
-    struct timeval tv;
-    long long int begin = 0;
-    long long int end = 0;
+struct timeval tv;
+long long int begin = 0;
+long long int end = 0;
 
-    configure_receiver();
+configure_receiver();
 
-    //open true observables log file written by the simulator
-    tracking_true_obs_reader true_obs_data;
-    int test_satellite_PRN = FLAGS_test_satellite_PRN;
-    std::cout << "Testing satellite PRN=" << test_satellite_PRN << std::endl;
-    std::string true_obs_file = std::string("./gps_l1_ca_obs_prn");
-    true_obs_file.append(std::to_string(test_satellite_PRN));
-    true_obs_file.append(".dat");
-    ASSERT_NO_THROW({
-        if (true_obs_data.open_obs_file(true_obs_file) == false)
-            {
-                throw std::exception();
-            };
-    }) << "Failure opening true observables file" << std::endl;
+//open true observables log file written by the simulator
+tracking_true_obs_reader true_obs_data;
+int test_satellite_PRN = FLAGS_test_satellite_PRN;
+std::cout << "Testing satellite PRN=" << test_satellite_PRN <<
+std::endl;
+std::string true_obs_file = std::string("./gps_l1_ca_obs_prn");
+true_obs_file.
+append(std::to_string(test_satellite_PRN));
+true_obs_file.append(".dat");
+ASSERT_NO_THROW({
+if (true_obs_data.
+open_obs_file(true_obs_file)
+== false)
+{
+throw
 
-    top_block = gr::make_top_block("Telemetry_Decoder test");
-    std::shared_ptr<TrackingInterface> tracking = std::make_shared<GpsL1CaDllPllTracking>(config.get(), "Tracking_1C", 1, 1);
-    //std::shared_ptr<TrackingInterface> tracking = std::make_shared<GpsL1CaDllPllCAidTracking>(config.get(), "Tracking_1C", 1, 1);
+std::exception();
 
-    boost::shared_ptr<GpsL1CADllPllTelemetryDecoderTest_msg_rx> msg_rx = GpsL1CADllPllTelemetryDecoderTest_msg_rx_make();
+};
+}) << "Failure opening true observables file" <<
+std::endl;
 
-    // load acquisition data based on the first epoch of the true observations
-    ASSERT_NO_THROW({
-        if (true_obs_data.read_binary_obs() == false)
-        {
-            throw std::exception();
-        };
-    })<< "Failure reading true observables file" << std::endl;
+top_block = gr::make_top_block("Telemetry_Decoder test");
+std::shared_ptr<TrackingInterface> tracking = std::make_shared<GpsL1CaDllPllTracking>(config.get(), "Tracking_1C", 1,
+                                                                                      1);
+//std::shared_ptr<TrackingInterface> tracking = std::make_shared<GpsL1CaDllPllCAidTracking>(config.get(), "Tracking_1C", 1, 1);
 
-    //restart the epoch counter
-    true_obs_data.restart();
+boost::shared_ptr <GpsL1CADllPllTelemetryDecoderTest_msg_rx> msg_rx = GpsL1CADllPllTelemetryDecoderTest_msg_rx_make();
 
-    std::cout << "Initial Doppler [Hz]=" << true_obs_data.doppler_l1_hz << " Initial code delay [Chips]=" << true_obs_data.prn_delay_chips << std::endl;
-    gnss_synchro.Acq_delay_samples = (GPS_L1_CA_CODE_LENGTH_CHIPS - true_obs_data.prn_delay_chips / GPS_L1_CA_CODE_LENGTH_CHIPS) * baseband_sampling_freq * GPS_L1_CA_CODE_PERIOD;
-    gnss_synchro.Acq_doppler_hz = true_obs_data.doppler_l1_hz;
-    gnss_synchro.Acq_samplestamp_samples = 0;
+// load acquisition data based on the first epoch of the true observations
+ASSERT_NO_THROW({
+if (true_obs_data.
 
-    std::shared_ptr<TelemetryDecoderInterface> tlm(new GpsL1CaTelemetryDecoder(config.get(), "TelemetryDecoder_1C",1, 1));
-    tlm->set_channel(0);
+read_binary_obs()
 
-    boost::shared_ptr<GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx> tlm_msg_rx = GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_make();
+== false)
+{
+throw
 
-    ASSERT_NO_THROW( {
-        tracking->set_channel(gnss_synchro.Channel_ID);
-    }) << "Failure setting channel." << std::endl;
+std::exception();
 
-    ASSERT_NO_THROW( {
-        tracking->set_gnss_synchro(&gnss_synchro);
-    }) << "Failure setting gnss_synchro." << std::endl;
+};
+})<< "Failure reading true observables file" <<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        tracking->connect(top_block);
-    }) << "Failure connecting tracking to the top_block." << std::endl;
+//restart the epoch counter
+true_obs_data.
 
-    ASSERT_NO_THROW( {
-        std::string file =  "./" + filename_raw_data;
-        const char * file_name = file.c_str();
-        gr::blocks::file_source::sptr file_source = gr::blocks::file_source::make(sizeof(int8_t), file_name, false);
-        gr::blocks::interleaved_char_to_complex::sptr  gr_interleaved_char_to_complex = gr::blocks::interleaved_char_to_complex::make();
-        gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(Gnss_Synchro));
-        top_block->connect(file_source, 0, gr_interleaved_char_to_complex, 0);
-        top_block->connect(gr_interleaved_char_to_complex, 0, tracking->get_left_block(), 0);
-        top_block->connect(tracking->get_right_block(), 0, tlm->get_left_block(), 0);
-        top_block->connect(tlm->get_right_block(), 0, sink, 0);
-        top_block->msg_connect(tracking->get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events"));
-    }) << "Failure connecting the blocks." << std::endl;
+restart();
 
-    tracking->start_tracking();
+std::cout << "Initial Doppler [Hz]=" << true_obs_data.doppler_l1_hz << " Initial code delay [Chips]=" << true_obs_data.prn_delay_chips <<
+std::endl;
+gnss_synchro.
+Acq_delay_samples =
+(GPS_L1_CA_CODE_LENGTH_CHIPS - true_obs_data.prn_delay_chips / GPS_L1_CA_CODE_LENGTH_CHIPS) * baseband_sampling_freq *
+GPS_L1_CA_CODE_PERIOD;
+gnss_synchro.
+Acq_doppler_hz = true_obs_data.doppler_l1_hz;
+gnss_synchro.
+Acq_samplestamp_samples = 0;
 
-    EXPECT_NO_THROW( {
-        gettimeofday(&tv, NULL);
-        begin = tv.tv_sec * 1000000 + tv.tv_usec;
-        top_block->run(); // Start threads and wait
-        gettimeofday(&tv, NULL);
-        end = tv.tv_sec * 1000000 + tv.tv_usec;
-    }) << "Failure running the top_block." << std::endl;
+std::shared_ptr<TelemetryDecoderInterface> tlm(new GpsL1CaTelemetryDecoder(config.get(), "TelemetryDecoder_1C", 1, 1));
+tlm->set_channel(0);
 
-    //check results
-    //load the true values
-    long int nepoch = true_obs_data.num_epochs();
-    std::cout << "True observation epochs=" << nepoch << std::endl;
+boost::shared_ptr <GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx> tlm_msg_rx = GpsL1CADllPllTelemetryDecoderTest_tlm_msg_rx_make();
 
-    arma::vec true_timestamp_s = arma::zeros(nepoch, 1);
-    arma::vec true_acc_carrier_phase_cycles = arma::zeros(nepoch, 1);
-    arma::vec true_Doppler_Hz = arma::zeros(nepoch, 1);
-    arma::vec true_prn_delay_chips = arma::zeros(nepoch, 1);
-    arma::vec true_tow_s = arma::zeros(nepoch, 1);
+ASSERT_NO_THROW( {
+tracking->
+set_channel(gnss_synchro
+.Channel_ID);
+}) << "Failure setting channel." <<
+std::endl;
 
-    long int epoch_counter = 0;
-    while(true_obs_data.read_binary_obs())
-    {
-        true_timestamp_s(epoch_counter) = true_obs_data.signal_timestamp_s;
-        true_acc_carrier_phase_cycles(epoch_counter) = true_obs_data.acc_carrier_phase_cycles;
-        true_Doppler_Hz(epoch_counter) = true_obs_data.doppler_l1_hz;
-        true_prn_delay_chips(epoch_counter) = true_obs_data.prn_delay_chips;
-        true_tow_s(epoch_counter) = true_obs_data.tow;
-        epoch_counter++;
-    }
+ASSERT_NO_THROW( {
+tracking->
+set_gnss_synchro(&gnss_synchro);
+}) << "Failure setting gnss_synchro." <<
+std::endl;
 
-    //load the measured values
-    tlm_dump_reader tlm_dump;
-    ASSERT_NO_THROW({
-        if (tlm_dump.open_obs_file(std::string("./telemetry0.dat")) == false)
-            {
-                throw std::exception();
-            };
-    }) << "Failure opening telemetry dump file" << std::endl;
+ASSERT_NO_THROW( {
+tracking->
+connect(top_block);
+}) << "Failure connecting tracking to the top_block." <<
+std::endl;
 
-    nepoch = tlm_dump.num_epochs();
-    std::cout << "Measured observation epochs=" << nepoch << std::endl;
+ASSERT_NO_THROW( {
+std::string file = "./" + filename_raw_data;
+const char *file_name = file.c_str();
+gr::blocks::file_source::sptr file_source = gr::blocks::file_source::make(sizeof(int8_t), file_name, false);
+gr::blocks::interleaved_char_to_complex::sptr gr_interleaved_char_to_complex = gr::blocks::interleaved_char_to_complex::make();
+gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(Gnss_Synchro));
+top_block->
+connect(file_source,
+0, gr_interleaved_char_to_complex, 0);
+top_block->
+connect(gr_interleaved_char_to_complex,
+0, tracking->
 
-    arma::vec tlm_timestamp_s = arma::zeros(nepoch, 1);
-    arma::vec tlm_TOW_at_Preamble = arma::zeros(nepoch, 1);
-    arma::vec tlm_tow_s = arma::zeros(nepoch, 1);
+get_left_block(),
 
-    epoch_counter = 0;
-    while(tlm_dump.read_binary_obs())
-    {
-        tlm_timestamp_s(epoch_counter) = tlm_dump.Prn_timestamp_ms / 1000.0;
-        tlm_TOW_at_Preamble(epoch_counter) = tlm_dump.d_TOW_at_Preamble;
-        tlm_tow_s(epoch_counter) = tlm_dump.TOW_at_current_symbol;
-        epoch_counter++;
-    }
+0);
+top_block->
+connect(tracking
+->
 
-    //Cut measurement initial transitory of the measurements
-    arma::uvec initial_meas_point = arma::find(tlm_tow_s >= true_tow_s(0), 1, "first");
+get_right_block(),
 
-    tlm_timestamp_s = tlm_timestamp_s.subvec(initial_meas_point(0), tlm_timestamp_s.size() - 1);
-    tlm_tow_s = tlm_tow_s.subvec(initial_meas_point(0), tlm_tow_s.size() - 1);
+0, tlm->
 
-    check_results(true_timestamp_s, true_tow_s, tlm_timestamp_s, tlm_tow_s);
+get_left_block(),
 
-    std::cout <<  "Test completed in " << (end - begin) << " microseconds" << std::endl;
+0);
+top_block->
+connect(tlm
+->
+
+get_right_block(),
+
+0, sink, 0);
+top_block->
+msg_connect(tracking
+->
+
+get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events")
+
+);
+}) << "Failure connecting the blocks." <<
+std::endl;
+
+tracking->
+
+start_tracking();
+
+EXPECT_NO_THROW( {
+gettimeofday(&tv, NULL
+);
+begin = tv.tv_sec * 1000000 + tv.tv_usec;
+top_block->
+
+run(); // Start threads and wait
+gettimeofday(&tv, NULL
+);
+end = tv.tv_sec * 1000000 + tv.tv_usec;
+}) << "Failure running the top_block." <<
+std::endl;
+
+//check results
+//load the true values
+long int nepoch = true_obs_data.num_epochs();
+std::cout << "True observation epochs=" << nepoch <<
+std::endl;
+
+arma::vec true_timestamp_s = arma::zeros(nepoch, 1);
+arma::vec true_acc_carrier_phase_cycles = arma::zeros(nepoch, 1);
+arma::vec true_Doppler_Hz = arma::zeros(nepoch, 1);
+arma::vec true_prn_delay_chips = arma::zeros(nepoch, 1);
+arma::vec true_tow_s = arma::zeros(nepoch, 1);
+
+long int epoch_counter = 0;
+while(true_obs_data.
+
+read_binary_obs()
+
+)
+{
+true_timestamp_s(epoch_counter) = true_obs_data.signal_timestamp_s;
+true_acc_carrier_phase_cycles(epoch_counter) = true_obs_data.acc_carrier_phase_cycles;
+true_Doppler_Hz(epoch_counter) = true_obs_data.doppler_l1_hz;
+true_prn_delay_chips(epoch_counter) = true_obs_data.prn_delay_chips;
+true_tow_s(epoch_counter) = true_obs_data.tow;
+epoch_counter++;
+}
+
+//load the measured values
+tlm_dump_reader tlm_dump;
+ASSERT_NO_THROW({
+if (tlm_dump.
+open_obs_file(std::string("./telemetry0.dat"))
+== false)
+{
+throw
+
+std::exception();
+
+};
+}) << "Failure opening telemetry dump file" <<
+std::endl;
+
+nepoch = tlm_dump.num_epochs();
+std::cout << "Measured observation epochs=" << nepoch <<
+std::endl;
+
+arma::vec tlm_timestamp_s = arma::zeros(nepoch, 1);
+arma::vec tlm_TOW_at_Preamble = arma::zeros(nepoch, 1);
+arma::vec tlm_tow_s = arma::zeros(nepoch, 1);
+
+epoch_counter = 0;
+while(tlm_dump.
+
+read_binary_obs()
+
+)
+{
+tlm_timestamp_s(epoch_counter) = tlm_dump.Prn_timestamp_ms / 1000.0;
+tlm_TOW_at_Preamble(epoch_counter) = tlm_dump.d_TOW_at_Preamble;
+tlm_tow_s(epoch_counter) = tlm_dump.TOW_at_current_symbol;
+epoch_counter++;
+}
+
+//Cut measurement initial transitory of the measurements
+arma::uvec initial_meas_point = arma::find(tlm_tow_s >= true_tow_s(0), 1, "first");
+
+tlm_timestamp_s = tlm_timestamp_s.subvec(initial_meas_point(0), tlm_timestamp_s.size() - 1);
+tlm_tow_s = tlm_tow_s.subvec(initial_meas_point(0), tlm_tow_s.size() - 1);
+
+check_results(true_timestamp_s, true_tow_s, tlm_timestamp_s, tlm_tow_s
+);
+
+std::cout <<  "Test completed in " << (end - begin) << " microseconds" <<
+std::endl;
 }
 

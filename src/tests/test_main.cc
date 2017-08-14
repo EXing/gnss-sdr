@@ -135,7 +135,6 @@ DECLARE_string(log_dir);
 #include "gnss_block/beidou_B1I_pcps_acquisition_gensource_gsoc2016_test.cc"
 #include "gnss_block/beidou_b1i_dll_pll_tracking_gsoc2016_test.cc"
 #include "gnss_block/beidou_b1i_dll_pll_tracking_gensource_gsoc2016_test.cc"
-//#include "gnss_block/beidou_B1I_pcps_2ms_acquisition_test.cc"
 
 // For GPS NAVIGATION (L1)
 concurrent_queue<Gps_Acq_Assist> global_gps_acq_assist_queue;

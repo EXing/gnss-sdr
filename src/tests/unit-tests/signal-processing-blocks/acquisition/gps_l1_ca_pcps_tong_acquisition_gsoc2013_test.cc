@@ -56,88 +56,94 @@
 // ######## GNURADIO BLOCK MESSAGE RECEVER #########
 class GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx;
 
-typedef boost::shared_ptr<GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx> GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_sptr;
+typedef boost::shared_ptr <GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx> GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_sptr;
 
-GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_sptr GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(concurrent_queue<int>& queue);
+GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_sptr
+GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(concurrent_queue<int> &queue);
 
 
-class GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx : public gr::block
-{
+class GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx : public gr::block {
 private:
-    friend GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_sptr GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(concurrent_queue<int>& queue);
+    friend GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_sptr
+    GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(concurrent_queue<int> &queue);
+
     void msg_handler_events(pmt::pmt_t msg);
-    GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx(concurrent_queue<int>& queue);
-    concurrent_queue<int>& channel_internal_queue;
+
+    GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx(concurrent_queue<int> &queue);
+
+    concurrent_queue<int> &channel_internal_queue;
 public:
     int rx_message;
+
     ~GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx(); //!< Default destructor
 };
 
 
-GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_sptr GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(concurrent_queue<int>& queue)
-{
+GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_sptr
+GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(concurrent_queue<int> &queue) {
     return GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_sptr(new GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx(queue));
 }
 
 
-void GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx::msg_handler_events(pmt::pmt_t msg)
-{
-    try
-    {
-            long int message = pmt::to_long(msg);
-            rx_message = message;
-            channel_internal_queue.push(rx_message);
+void GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx::msg_handler_events(pmt::pmt_t msg) {
+    try {
+        long int message = pmt::to_long(msg);
+        rx_message = message;
+        channel_internal_queue.push(rx_message);
     }
-    catch(boost::bad_any_cast& e)
-    {
-            LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
-            rx_message = 0;
+    catch (boost::bad_any_cast &e) {
+        LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
+        rx_message = 0;
     }
 }
 
 
-GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx::GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx(concurrent_queue<int>& queue) :
-    gr::block("GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx", gr::io_signature::make(0, 0, 0), gr::io_signature::make(0, 0, 0)), channel_internal_queue(queue)
-{
+GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx::GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx(
+        concurrent_queue<int> &queue) :
+        gr::block("GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx", gr::io_signature::make(0, 0, 0),
+                  gr::io_signature::make(0, 0, 0)), channel_internal_queue(queue) {
     this->message_port_register_in(pmt::mp("events"));
-    this->set_msg_handler(pmt::mp("events"), boost::bind(&GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx::msg_handler_events, this, _1));
+    this->set_msg_handler(pmt::mp("events"),
+                          boost::bind(&GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx::msg_handler_events, this, _1));
     rx_message = 0;
 }
 
-GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx::~GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx()
-{}
+GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx::~GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx() {}
 
 
 // ###########################################################
 
-class GpsL1CaPcpsTongAcquisitionGSoC2013Test: public ::testing::Test
-{
+class GpsL1CaPcpsTongAcquisitionGSoC2013Test : public ::testing::Test {
 protected:
-    GpsL1CaPcpsTongAcquisitionGSoC2013Test()
-    {
+    GpsL1CaPcpsTongAcquisitionGSoC2013Test() {
         item_size = sizeof(gr_complex);
         stop = false;
         message = 0;
         gnss_synchro = Gnss_Synchro();
     }
 
-    ~GpsL1CaPcpsTongAcquisitionGSoC2013Test()
-    {
+    ~GpsL1CaPcpsTongAcquisitionGSoC2013Test() {
     }
 
     void init();
+
     void config_1();
+
     void config_2();
+
     void start_queue();
+
     void wait_message();
+
     void process_message();
+
     void stop_queue();
 
     concurrent_queue<int> channel_internal_queue;
     gr::msg_queue::sptr queue;
     gr::top_block_sptr top_block;
-    std::shared_ptr<GpsL1CaPcpsTongAcquisition> acquisition;
-    std::shared_ptr<InMemoryConfiguration> config;
+    std::shared_ptr <GpsL1CaPcpsTongAcquisition> acquisition;
+    std::shared_ptr <InMemoryConfiguration> config;
     Gnss_Synchro gnss_synchro;
     size_t item_size;
     bool stop;
@@ -167,8 +173,7 @@ protected:
     double Pfa_a = 0.0;
 };
 
-void GpsL1CaPcpsTongAcquisitionGSoC2013Test::init()
-{
+void GpsL1CaPcpsTongAcquisitionGSoC2013Test::init() {
     message = 0;
     realization_counter = 0;
     detection_counter = 0;
@@ -182,19 +187,18 @@ void GpsL1CaPcpsTongAcquisitionGSoC2013Test::init()
     Pfa_a = 0;
 }
 
-void GpsL1CaPcpsTongAcquisitionGSoC2013Test::config_1()
-{
+void GpsL1CaPcpsTongAcquisitionGSoC2013Test::config_1() {
     gnss_synchro.Channel_ID = 0;
     gnss_synchro.System = 'G';
     std::string signal = "1C";
-    signal.copy(gnss_synchro.Signal,2,0);
+    signal.copy(gnss_synchro.Signal, 2, 0);
 
     integration_time_ms = 1;
     fs_in = 4e6;
 
     expected_delay_chips = 600;
     expected_doppler_hz = 750;
-    max_doppler_error_hz = 2/(3*integration_time_ms*1e-3);
+    max_doppler_error_hz = 2 / (3 * integration_time_ms * 1e-3);
     max_delay_error_chips = 0.50;
 
     num_of_realizations = 1;
@@ -251,19 +255,18 @@ void GpsL1CaPcpsTongAcquisitionGSoC2013Test::config_1()
     config->set_property("Acquisition.dump", "false");
 }
 
-void GpsL1CaPcpsTongAcquisitionGSoC2013Test::config_2()
-{
+void GpsL1CaPcpsTongAcquisitionGSoC2013Test::config_2() {
     gnss_synchro.Channel_ID = 0;
     gnss_synchro.System = 'G';
     std::string signal = "1C";
-    signal.copy(gnss_synchro.Signal,2,0);
+    signal.copy(gnss_synchro.Signal, 2, 0);
 
     integration_time_ms = 1;
     fs_in = 4e6;
 
     expected_delay_chips = 600;
     expected_doppler_hz = 750;
-    max_doppler_error_hz = 2/(3*integration_time_ms*1e-3);
+    max_doppler_error_hz = 2 / (3 * integration_time_ms * 1e-3);
     max_delay_error_chips = 0.50;
 
     num_of_realizations = 100;
@@ -338,292 +341,426 @@ void GpsL1CaPcpsTongAcquisitionGSoC2013Test::config_2()
     config->set_property("Acquisition.dump", "false");
 }
 
-void GpsL1CaPcpsTongAcquisitionGSoC2013Test::start_queue()
-{
+void GpsL1CaPcpsTongAcquisitionGSoC2013Test::start_queue() {
     stop = false;
     ch_thread = boost::thread(&GpsL1CaPcpsTongAcquisitionGSoC2013Test::wait_message, this);
 }
 
-void GpsL1CaPcpsTongAcquisitionGSoC2013Test::wait_message()
-{
+void GpsL1CaPcpsTongAcquisitionGSoC2013Test::wait_message() {
     struct timeval tv;
     long long int begin = 0;
     long long int end = 0;
 
-    while (!stop)
-        {
-            acquisition->reset();
+    while (!stop) {
+        acquisition->reset();
 
-            gettimeofday(&tv, NULL);
-            begin = tv.tv_sec *1e6 + tv.tv_usec;
+        gettimeofday(&tv, NULL);
+        begin = tv.tv_sec * 1e6 + tv.tv_usec;
 
-            channel_internal_queue.wait_and_pop(message);
+        channel_internal_queue.wait_and_pop(message);
 
-            gettimeofday(&tv, NULL);
-            end = tv.tv_sec*1e6 + tv.tv_usec;
+        gettimeofday(&tv, NULL);
+        end = tv.tv_sec * 1e6 + tv.tv_usec;
 
-            mean_acq_time_us += (end - begin);
+        mean_acq_time_us += (end - begin);
 
-            process_message();
-        }
+        process_message();
+    }
 }
 
-void GpsL1CaPcpsTongAcquisitionGSoC2013Test::process_message()
-{
-    if (message == 1)
-        {
-            detection_counter++;
+void GpsL1CaPcpsTongAcquisitionGSoC2013Test::process_message() {
+    if (message == 1) {
+        detection_counter++;
 
-            // The term -5 is here to correct the additional delay introduced by the FIR filter
-            double delay_error_chips = std::abs((double)expected_delay_chips - (double)(gnss_synchro.Acq_delay_samples-5)*1023.0/((double)fs_in*1e-3));
-            double doppler_error_hz = std::abs(expected_doppler_hz - gnss_synchro.Acq_doppler_hz);
+        // The term -5 is here to correct the additional delay introduced by the FIR filter
+        double delay_error_chips = std::abs((double) expected_delay_chips -
+                                            (double) (gnss_synchro.Acq_delay_samples - 5) * 1023.0 /
+                                            ((double) fs_in * 1e-3));
+        double doppler_error_hz = std::abs(expected_doppler_hz - gnss_synchro.Acq_doppler_hz);
 
-            mse_delay += std::pow(delay_error_chips, 2);
-            mse_doppler += std::pow(doppler_error_hz, 2);
+        mse_delay += std::pow(delay_error_chips, 2);
+        mse_doppler += std::pow(doppler_error_hz, 2);
 
-            if ((delay_error_chips < max_delay_error_chips) && (doppler_error_hz < max_doppler_error_hz))
-                {
-                    correct_estimation_counter++;
-                }
+        if ((delay_error_chips < max_delay_error_chips) && (doppler_error_hz < max_doppler_error_hz)) {
+            correct_estimation_counter++;
         }
+    }
 
     realization_counter++;
 
-    std::cout << "Progress: " << round((float)realization_counter/num_of_realizations*100) << "% \r" << std::flush;
+    std::cout << "Progress: " << round((float) realization_counter / num_of_realizations * 100) << "% \r" << std::flush;
 
-    if (realization_counter == num_of_realizations)
-        {
-            mse_delay /= num_of_realizations;
-            mse_doppler /= num_of_realizations;
+    if (realization_counter == num_of_realizations) {
+        mse_delay /= num_of_realizations;
+        mse_doppler /= num_of_realizations;
 
-            Pd = (double)correct_estimation_counter / (double)num_of_realizations;
-            Pfa_a = (double)detection_counter / (double)num_of_realizations;
-            Pfa_p = (double)(detection_counter-correct_estimation_counter) / (double)num_of_realizations;
+        Pd = (double) correct_estimation_counter / (double) num_of_realizations;
+        Pfa_a = (double) detection_counter / (double) num_of_realizations;
+        Pfa_p = (double) (detection_counter - correct_estimation_counter) / (double) num_of_realizations;
 
-            mean_acq_time_us /= num_of_realizations;
+        mean_acq_time_us /= num_of_realizations;
 
-            stop_queue();
-            top_block->stop();
+        stop_queue();
+        top_block->stop();
 
-            std::cout << std::endl;
-        }
+        std::cout << std::endl;
+    }
 }
 
-void GpsL1CaPcpsTongAcquisitionGSoC2013Test::stop_queue()
-{
+void GpsL1CaPcpsTongAcquisitionGSoC2013Test::stop_queue() {
     stop = true;
 }
 
-TEST_F(GpsL1CaPcpsTongAcquisitionGSoC2013Test, Instantiate)
+TEST_F(GpsL1CaPcpsTongAcquisitionGSoC2013Test, Instantiate
+)
 {
-    config_1();
-    acquisition = std::make_shared<GpsL1CaPcpsTongAcquisition>(config.get(), "Acquisition", 1, 1);
+config_1();
+
+acquisition = std::make_shared<GpsL1CaPcpsTongAcquisition>(config.get(), "Acquisition", 1, 1);
 }
 
-TEST_F(GpsL1CaPcpsTongAcquisitionGSoC2013Test, ConnectAndRun)
+TEST_F(GpsL1CaPcpsTongAcquisitionGSoC2013Test, ConnectAndRun
+)
 {
-    int nsamples = floor(fs_in*integration_time_ms*1e-3);
-    struct timeval tv;
-    long long int begin = 0;
-    long long int end = 0;
-    top_block = gr::make_top_block("Acquisition test");
-    queue = gr::msg_queue::make(0);
+int nsamples = floor(fs_in * integration_time_ms * 1e-3);
+struct timeval tv;
+long long int begin = 0;
+long long int end = 0;
+top_block = gr::make_top_block("Acquisition test");
+queue = gr::msg_queue::make(0);
 
-    config_1();
-    acquisition = std::make_shared<GpsL1CaPcpsTongAcquisition>(config.get(), "Acquisition", 1, 1);
-    boost::shared_ptr<GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx> msg_rx = GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(channel_internal_queue);
+config_1();
 
-    ASSERT_NO_THROW( {
-        acquisition->connect(top_block);
-        boost::shared_ptr<gr::analog::sig_source_c> source = gr::analog::sig_source_c::make(fs_in, gr::analog::GR_SIN_WAVE, 1000, 1, gr_complex(0));
-        boost::shared_ptr<gr::block> valve = gnss_sdr_make_valve(sizeof(gr_complex), nsamples, queue);
-        top_block->connect(source, 0, valve, 0);
-        top_block->connect(valve, 0, acquisition->get_left_block(), 0);
-        top_block->msg_connect(acquisition->get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events"));
-    }) << "Failure connecting the blocks of acquisition test." << std::endl;
+acquisition = std::make_shared<GpsL1CaPcpsTongAcquisition>(config.get(), "Acquisition", 1, 1);
+boost::shared_ptr <GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx> msg_rx = GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(
+        channel_internal_queue);
 
-    EXPECT_NO_THROW( {
-        gettimeofday(&tv, NULL);
-        begin = tv.tv_sec *1e6 + tv.tv_usec;
-        top_block->run(); // Start threads and wait
-        gettimeofday(&tv, NULL);
-        end = tv.tv_sec *1e6 + tv.tv_usec;
-    }) << "Failure running the top_block." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+connect(top_block);
+boost::shared_ptr <gr::analog::sig_source_c> source = gr::analog::sig_source_c::make(fs_in, gr::analog::GR_SIN_WAVE,
+                                                                                     1000, 1, gr_complex(0));
+boost::shared_ptr <gr::block> valve = gnss_sdr_make_valve(sizeof(gr_complex), nsamples, queue);
+top_block->
+connect(source,
+0, valve, 0);
+top_block->
+connect(valve,
+0, acquisition->
 
-    std::cout <<  "Processed " << nsamples << " samples in " << (end - begin) << " microseconds" << std::endl;
+get_left_block(),
+
+0);
+top_block->
+msg_connect(acquisition
+->
+
+get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events")
+
+);
+}) << "Failure connecting the blocks of acquisition test." <<
+std::endl;
+
+EXPECT_NO_THROW( {
+gettimeofday(&tv, NULL
+);
+begin = tv.tv_sec * 1e6 + tv.tv_usec;
+top_block->
+
+run(); // Start threads and wait
+gettimeofday(&tv, NULL
+);
+end = tv.tv_sec * 1e6 + tv.tv_usec;
+}) << "Failure running the top_block." <<
+std::endl;
+
+std::cout <<  "Processed " << nsamples << " samples in " << (end - begin) << " microseconds" <<
+std::endl;
 }
 
-TEST_F(GpsL1CaPcpsTongAcquisitionGSoC2013Test, ValidationOfResults)
+TEST_F(GpsL1CaPcpsTongAcquisitionGSoC2013Test, ValidationOfResults
+)
 {
-    config_1();
-    top_block = gr::make_top_block("Acquisition test");
-    queue = gr::msg_queue::make(0);
+config_1();
 
-    acquisition = std::make_shared<GpsL1CaPcpsTongAcquisition>(config.get(), "Acquisition", 1, 1);
-    boost::shared_ptr<GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx> msg_rx = GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(channel_internal_queue);
+top_block = gr::make_top_block("Acquisition test");
+queue = gr::msg_queue::make(0);
 
-    ASSERT_NO_THROW( {
-        acquisition->set_channel(1);
-    }) << "Failure setting channel." << std::endl;
+acquisition = std::make_shared<GpsL1CaPcpsTongAcquisition>(config.get(), "Acquisition", 1, 1);
+boost::shared_ptr <GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx> msg_rx = GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(
+        channel_internal_queue);
 
-    ASSERT_NO_THROW( {
-        acquisition->set_gnss_synchro(&gnss_synchro);
-    }) << "Failure setting gnss_synchro." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->set_channel(1);
+}) << "Failure setting channel." <<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_max(config->property("Acquisition.doppler_max", 10000));
-    }) << "Failure setting doppler_max." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_gnss_synchro(&gnss_synchro);
+}) << "Failure setting gnss_synchro." <<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_step(config->property("Acquisition.doppler_step", 500));
-    }) << "Failure setting doppler_step." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_doppler_max(config
+->property("Acquisition.doppler_max", 10000));
+}) << "Failure setting doppler_max." <<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->set_threshold(config->property("Acquisition.threshold", 0.0));
-    }) << "Failure setting threshold." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_doppler_step(config
+->property("Acquisition.doppler_step", 500));
+}) << "Failure setting doppler_step." <<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->connect(top_block);
-    }) << "Failure connecting acquisition to the top_block." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_threshold(config
+->property("Acquisition.threshold", 0.0));
+}) << "Failure setting threshold." <<
+std::endl;
 
-    acquisition->init();
+ASSERT_NO_THROW( {
+acquisition->
+connect(top_block);
+}) << "Failure connecting acquisition to the top_block." <<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        boost::shared_ptr<GenSignalSource> signal_source;
-        SignalGenerator* signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
-        FirFilter* filter = new FirFilter(config.get(), "InputFilter", 1, 1);
-        signal_source.reset(new GenSignalSource(signal_generator, filter, "SignalSource", queue));
-        signal_source->connect(top_block);
-        top_block->connect(signal_source->get_right_block(), 0, acquisition->get_left_block(), 0);
-        top_block->msg_connect(acquisition->get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events"));
-    }) << "Failure connecting the blocks of acquisition test." << std::endl;
+acquisition->
 
-    // i = 0 --> satellite in acquisition is visible
-    // i = 1 --> satellite in acquisition is not visible
-    for (unsigned int i = 0; i < 2; i++)
-        {
-            init();
+init();
 
-            if (i == 0)
-                {
-                    gnss_synchro.PRN = 10; // This satellite is visible
-                }
-            else if (i == 1)
-                {
-                    gnss_synchro.PRN = 20; // This satellite is not visible
-                }
+ASSERT_NO_THROW( {
+boost::shared_ptr <GenSignalSource> signal_source;
+SignalGenerator *signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
+FirFilter *filter = new FirFilter(config.get(), "InputFilter", 1, 1);
+signal_source.reset(new
+GenSignalSource(signal_generator, filter,
+"SignalSource", queue));
+signal_source->
+connect(top_block);
+top_block->
+connect(signal_source
+->
 
-            acquisition->set_local_code();
-            acquisition->set_state(1);
+get_right_block(),
 
-            start_queue();
+0, acquisition->
 
-            EXPECT_NO_THROW( {
-                top_block->run(); // Start threads and wait
-            }) << "Failure running the top_block." << std::endl;
+get_left_block(),
 
-            stop_queue();
+0);
+top_block->
+msg_connect(acquisition
+->
 
-            if (i == 0)
-            {
-                EXPECT_EQ(1, message) << "Acquisition failure. Expected message: 1=ACQ SUCCESS.";
-                if (message == 1)
-                    {
-                        EXPECT_EQ((unsigned int)1, correct_estimation_counter) << "Acquisition failure. Incorrect parameters estimation.";
-                    }
+get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events")
 
-            }
-            else if (i == 1)
-            {
-                EXPECT_EQ(2, message) << "Acquisition failure. Expected message: 2=ACQ FAIL.";
-            }
+);
+}) << "Failure connecting the blocks of acquisition test." <<
+std::endl;
 
-            ch_thread.join();
-        }
+// i = 0 --> satellite in acquisition is visible
+// i = 1 --> satellite in acquisition is not visible
+for (
+unsigned int i = 0;
+i < 2; i++)
+{
+init();
+
+if (i == 0)
+{
+gnss_synchro.
+PRN = 10; // This satellite is visible
+}
+else if (i == 1)
+{
+gnss_synchro.
+PRN = 20; // This satellite is not visible
 }
 
-TEST_F(GpsL1CaPcpsTongAcquisitionGSoC2013Test, ValidationOfResultsProbabilities)
+acquisition->
+
+set_local_code();
+
+acquisition->set_state(1);
+
+start_queue();
+
+EXPECT_NO_THROW( {
+top_block->
+
+run(); // Start threads and wait
+}) << "Failure running the top_block." <<
+std::endl;
+
+stop_queue();
+
+if (i == 0)
 {
-    config_2();
-    top_block = gr::make_top_block("Acquisition test");
-    queue = gr::msg_queue::make(0);
-    acquisition = std::make_shared<GpsL1CaPcpsTongAcquisition>(config.get(), "Acquisition", 1, 1);
-    boost::shared_ptr<GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx> msg_rx = GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(channel_internal_queue);
+EXPECT_EQ(1, message) << "Acquisition failure. Expected message: 1=ACQ SUCCESS.";
+if (message == 1)
+{
+EXPECT_EQ((
+unsigned int)1, correct_estimation_counter) << "Acquisition failure. Incorrect parameters estimation.";
+}
 
-    ASSERT_NO_THROW( {
-        acquisition->set_channel(1);
-    }) << "Failure setting channel." << std::endl;
+}
+else if (i == 1)
+{
+EXPECT_EQ(2, message) << "Acquisition failure. Expected message: 2=ACQ FAIL.";
+}
 
-    ASSERT_NO_THROW( {
-        acquisition->set_gnss_synchro(&gnss_synchro);
-    }) << "Failure setting gnss_synchro." << std::endl;
+ch_thread.
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_max(config->property("Acquisition.doppler_max", 10000));
-    }) << "Failure setting doppler_max." << std::endl;
+join();
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_step(config->property("Acquisition.doppler_step", 500));
-    }) << "Failure setting doppler_step." << std::endl;
+}
+}
 
-    ASSERT_NO_THROW( {
-        acquisition->set_threshold(config->property("Acquisition.threshold", 0.0));
-    }) << "Failure setting threshold." << std::endl;
+TEST_F(GpsL1CaPcpsTongAcquisitionGSoC2013Test, ValidationOfResultsProbabilities
+)
+{
+config_2();
 
-    ASSERT_NO_THROW( {
-        acquisition->connect(top_block);
-    }) << "Failure connecting acquisition to the top_block." << std::endl;
+top_block = gr::make_top_block("Acquisition test");
+queue = gr::msg_queue::make(0);
+acquisition = std::make_shared<GpsL1CaPcpsTongAcquisition>(config.get(), "Acquisition", 1, 1);
+boost::shared_ptr <GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx> msg_rx = GpsL1CaPcpsTongAcquisitionGSoC2013Test_msg_rx_make(
+        channel_internal_queue);
 
-    acquisition->init();
+ASSERT_NO_THROW( {
+acquisition->set_channel(1);
+}) << "Failure setting channel." <<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        boost::shared_ptr<GenSignalSource> signal_source;
-        SignalGenerator* signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
-        FirFilter* filter = new FirFilter(config.get(), "InputFilter", 1, 1);
-        signal_source.reset(new GenSignalSource(signal_generator, filter, "SignalSource", queue));
-        signal_source->connect(top_block);
-        top_block->connect(signal_source->get_right_block(), 0, acquisition->get_left_block(), 0);
-        top_block->msg_connect(acquisition->get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events"));
-    }) << "Failure connecting the blocks of acquisition test." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_gnss_synchro(&gnss_synchro);
+}) << "Failure setting gnss_synchro." <<
+std::endl;
 
-    std::cout << "Probability of false alarm (target) = " << 0.1 << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_doppler_max(config
+->property("Acquisition.doppler_max", 10000));
+}) << "Failure setting doppler_max." <<
+std::endl;
 
-    // i = 0 --> satellite in acquisition is visible (prob of detection and prob of detection with wrong estimation)
-    // i = 1 --> satellite in acquisition is not visible (prob of false detection)
-    for (unsigned int i = 0; i < 2; i++)
-        {
-            init();
+ASSERT_NO_THROW( {
+acquisition->
+set_doppler_step(config
+->property("Acquisition.doppler_step", 500));
+}) << "Failure setting doppler_step." <<
+std::endl;
 
-            if (i == 0)
-                {
-                    gnss_synchro.PRN = 10; // This satellite is visible
-                }
-            else if (i == 1)
-                {
-                    gnss_synchro.PRN = 20; // This satellite is not visible
-                }
+ASSERT_NO_THROW( {
+acquisition->
+set_threshold(config
+->property("Acquisition.threshold", 0.0));
+}) << "Failure setting threshold." <<
+std::endl;
 
-            acquisition->set_local_code();
-            acquisition->set_state(1);
-            start_queue();
+ASSERT_NO_THROW( {
+acquisition->
+connect(top_block);
+}) << "Failure connecting acquisition to the top_block." <<
+std::endl;
 
-            EXPECT_NO_THROW( {
-                top_block->run(); // Start threads and wait
-            }) << "Failure running the top_block." << std::endl;
+acquisition->
 
-            stop_queue();
+init();
 
-            if (i == 0)
-            {
-                std::cout << "Estimated probability of detection = " << Pd << std::endl;
-                std::cout << "Estimated probability of false alarm (satellite present) = " << Pfa_p << std::endl;
-                std::cout << "Mean acq time = " << mean_acq_time_us << " microseconds." << std::endl;
-            }
-            else if (i == 1)
-            {
-                std::cout << "Estimated probability of false alarm (satellite absent) = " << Pfa_a << std::endl;
-                std::cout << "Mean acq time = " << mean_acq_time_us << " microseconds." << std::endl;
-            }
-            ch_thread.join();
-        }
+ASSERT_NO_THROW( {
+boost::shared_ptr <GenSignalSource> signal_source;
+SignalGenerator *signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
+FirFilter *filter = new FirFilter(config.get(), "InputFilter", 1, 1);
+signal_source.reset(new
+GenSignalSource(signal_generator, filter,
+"SignalSource", queue));
+signal_source->
+connect(top_block);
+top_block->
+connect(signal_source
+->
+
+get_right_block(),
+
+0, acquisition->
+
+get_left_block(),
+
+0);
+top_block->
+msg_connect(acquisition
+->
+
+get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events")
+
+);
+}) << "Failure connecting the blocks of acquisition test." <<
+std::endl;
+
+std::cout << "Probability of false alarm (target) = " << 0.1 <<
+std::endl;
+
+// i = 0 --> satellite in acquisition is visible (prob of detection and prob of detection with wrong estimation)
+// i = 1 --> satellite in acquisition is not visible (prob of false detection)
+for (
+unsigned int i = 0;
+i < 2; i++)
+{
+init();
+
+if (i == 0)
+{
+gnss_synchro.
+PRN = 10; // This satellite is visible
+}
+else if (i == 1)
+{
+gnss_synchro.
+PRN = 20; // This satellite is not visible
+}
+
+acquisition->
+
+set_local_code();
+
+acquisition->set_state(1);
+
+start_queue();
+
+EXPECT_NO_THROW( {
+top_block->
+
+run(); // Start threads and wait
+}) << "Failure running the top_block." <<
+std::endl;
+
+stop_queue();
+
+if (i == 0)
+{
+std::cout << "Estimated probability of detection = " << Pd <<
+std::endl;
+std::cout << "Estimated probability of false alarm (satellite present) = " << Pfa_p <<
+std::endl;
+std::cout << "Mean acq time = " << mean_acq_time_us << " microseconds." <<
+std::endl;
+}
+else if (i == 1)
+{
+std::cout << "Estimated probability of false alarm (satellite absent) = " << Pfa_a <<
+std::endl;
+std::cout << "Mean acq time = " << mean_acq_time_us << " microseconds." <<
+std::endl;
+}
+ch_thread.
+
+join();
+
+}
 }

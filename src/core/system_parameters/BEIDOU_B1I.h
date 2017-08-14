@@ -338,4 +338,4 @@ const std::vector<std::pair<int, int>> PRGREE({{252, 11},
 //const std::vector<std::pair<int,int>> HEALTH_SV23({{253,6}});
 //const std::vector<std::pair<int,int>> HEALTH_SV24({{259,6}});
 
-#endif /* GNSS_SDR_GPS_L1_CA_H_ */
+#endif

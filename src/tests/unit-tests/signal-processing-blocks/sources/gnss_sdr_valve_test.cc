@@ -38,25 +38,45 @@
 #include <gnuradio/msg_queue.h>
 #include "gnss_sdr_valve.h"
 
-TEST(Valve_Test, CheckEventSentAfter100Samples)
+TEST(Valve_Test, CheckEventSentAfter100Samples
+)
 {
-    gr::msg_queue::sptr queue = gr::msg_queue::make(0);
+gr::msg_queue::sptr queue = gr::msg_queue::make(0);
 
-    gr::top_block_sptr top_block = gr::make_top_block("gnss_sdr_valve_test");
+gr::top_block_sptr top_block = gr::make_top_block("gnss_sdr_valve_test");
 
-    gr::analog::sig_source_f::sptr source = gr::analog::sig_source_f::make(100, gr::analog::GR_CONST_WAVE, 100, 1, 0);
-    boost::shared_ptr<gr::block> valve = gnss_sdr_make_valve(sizeof(float), 100, queue);
-    gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(float));
+gr::analog::sig_source_f::sptr source = gr::analog::sig_source_f::make(100, gr::analog::GR_CONST_WAVE, 100, 1, 0);
+boost::shared_ptr <gr::block> valve = gnss_sdr_make_valve(sizeof(float), 100, queue);
+gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(float));
 
-    unsigned int expected0 = 0;
-    EXPECT_EQ(expected0, queue->count());
+unsigned int expected0 = 0;
+EXPECT_EQ(expected0, queue
+->
 
-    top_block->connect(source, 0, valve, 0);
-    top_block->connect(valve, 0, sink, 0);
+count()
 
-    top_block->run();
-    top_block->stop();
+);
 
-    unsigned int expected1 = 1;
-    EXPECT_EQ(expected1, queue->count());
+top_block->
+connect(source,
+0, valve, 0);
+top_block->
+connect(valve,
+0, sink, 0);
+
+top_block->
+
+run();
+
+top_block->
+
+stop();
+
+unsigned int expected1 = 1;
+EXPECT_EQ(expected1, queue
+->
+
+count()
+
+);
 }

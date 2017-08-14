@@ -36,13 +36,16 @@
 #include <string>
 #include <vector>
 
-class tlm_dump_reader
-{
+class tlm_dump_reader {
 public:
     ~tlm_dump_reader();
+
     bool read_binary_obs();
+
     bool restart();
+
     long int num_epochs();
+
     bool open_obs_file(std::string out_file);
 
     //telemetry decoder dump variables

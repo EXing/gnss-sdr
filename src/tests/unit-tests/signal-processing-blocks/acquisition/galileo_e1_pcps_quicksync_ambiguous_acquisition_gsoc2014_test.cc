@@ -52,8 +52,10 @@
 #include "gnss_sdr_valve.h"
 #include "galileo_e1_pcps_quicksync_ambiguous_acquisition.h"
 
-DEFINE_double(e1_value_threshold, 0.3, "Value of the threshold for the acquisition");
-DEFINE_int32(e1_value_CN0_dB_0, 50, "Value for the CN0_dB_0 in channel 0");
+DEFINE_double(e1_value_threshold,
+0.3, "Value of the threshold for the acquisition");
+DEFINE_int32(e1_value_CN0_dB_0,
+50, "Value for the CN0_dB_0 in channel 0");
 
 using google::LogMessage;
 
@@ -61,92 +63,100 @@ using google::LogMessage;
 // ######## GNURADIO BLOCK MESSAGE RECEVER #########
 class GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx;
 
-typedef boost::shared_ptr<GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr;
+typedef boost::shared_ptr <GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr;
 
-GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(concurrent_queue<int>& queue);
+GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr
+GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(concurrent_queue<int> &queue);
 
 
-class GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx : public gr::block
-{
+class GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx : public gr::block {
 private:
-    friend GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(concurrent_queue<int>& queue);
+    friend GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr
+    GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(concurrent_queue<int> &queue);
+
     void msg_handler_events(pmt::pmt_t msg);
-    GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx(concurrent_queue<int>& queue);
-    concurrent_queue<int>& channel_internal_queue;
+
+    GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx(concurrent_queue<int> &queue);
+
+    concurrent_queue<int> &channel_internal_queue;
 public:
     int rx_message;
+
     ~GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx(); //!< Default destructor
 };
 
 
-GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(concurrent_queue<int>& queue)
-{
-    return GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr(new GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx(queue));
+GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr
+GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(concurrent_queue<int> &queue) {
+    return GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_sptr(
+            new GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx(queue));
 }
 
 
-void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx::msg_handler_events(pmt::pmt_t msg)
-{
-    try
-    {
-            long int message = pmt::to_long(msg);
-            rx_message = message;
-            channel_internal_queue.push(rx_message);
+void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx::msg_handler_events(pmt::pmt_t msg) {
+    try {
+        long int message = pmt::to_long(msg);
+        rx_message = message;
+        channel_internal_queue.push(rx_message);
     }
-    catch(boost::bad_any_cast& e)
-    {
-            LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
-            rx_message = 0;
+    catch (boost::bad_any_cast &e) {
+        LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
+        rx_message = 0;
     }
 }
 
 
-GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx::GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx(concurrent_queue<int>& queue) :
-    gr::block("GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx", gr::io_signature::make(0, 0, 0), gr::io_signature::make(0, 0, 0)), channel_internal_queue(queue)
-{
+GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx::GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx(
+        concurrent_queue<int> &queue) :
+        gr::block("GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx", gr::io_signature::make(0, 0, 0),
+                  gr::io_signature::make(0, 0, 0)), channel_internal_queue(queue) {
     this->message_port_register_in(pmt::mp("events"));
-    this->set_msg_handler(pmt::mp("events"), boost::bind(&GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx::msg_handler_events, this, _1));
+    this->set_msg_handler(pmt::mp("events"), boost::bind(
+            &GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx::msg_handler_events, this, _1));
     rx_message = 0;
 }
 
-GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx::~GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx()
-{}
+GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx::~GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx() {}
 
 
 // ###########################################################
 
-class GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test: public ::testing::Test
-{
+class GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test : public ::testing::Test {
 protected:
-    GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test()
-{
+    GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test() {
         factory = std::make_shared<GNSSBlockFactory>();
         item_size = sizeof(gr_complex);
         stop = false;
         message = 0;
         gnss_synchro = Gnss_Synchro();
         init();
-}
+    }
 
-    ~GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test()
-    {
+    ~GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test() {
     }
 
     void init();
+
     void config_1();
+
     void config_2();
+
     void config_3();
+
     void start_queue();
+
     void wait_message();
+
     void process_message();
+
     void stop_queue();
 
     concurrent_queue<int> channel_internal_queue;
     gr::msg_queue::sptr queue;
     gr::top_block_sptr top_block;
-    std::shared_ptr<GalileoE1PcpsQuickSyncAmbiguousAcquisition> acquisition;
-    std::shared_ptr<GNSSBlockFactory> factory;
-    std::shared_ptr<InMemoryConfiguration> config;
+    std::shared_ptr <GalileoE1PcpsQuickSyncAmbiguousAcquisition> acquisition;
+    std::shared_ptr <GNSSBlockFactory> factory;
+    std::shared_ptr <InMemoryConfiguration> config;
     Gnss_Synchro gnss_synchro;
     size_t item_size;
     bool stop;
@@ -183,8 +193,7 @@ protected:
 };
 
 
-void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::init()
-{
+void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::init() {
     message = 0;
     realization_counter = 0;
     detection_counter = 0;
@@ -201,8 +210,7 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::init()
     Pmd = 0;
 }
 
-void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_1()
-{
+void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_1() {
     gnss_synchro.Channel_ID = 0;
     gnss_synchro.System = 'E';
     std::string signal = "1C";
@@ -213,7 +221,7 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_1()
 
     expected_delay_chips = 600;
     expected_doppler_hz = 750;
-    max_doppler_error_hz = 2/(3*integration_time_ms*1e-3);
+    max_doppler_error_hz = 2 / (3 * integration_time_ms * 1e-3);
     max_delay_error_chips = 0.50;
 
     num_of_realizations = 1;
@@ -232,9 +240,9 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_1()
     config->set_property("SignalSource.PRN_0", "10");
     config->set_property("SignalSource.CN0_dB_0", "44");
     config->set_property("SignalSource.doppler_Hz_0",
-            std::to_string(expected_doppler_hz));
+                         std::to_string(expected_doppler_hz));
     config->set_property("SignalSource.delay_chips_0",
-            std::to_string(expected_delay_chips));
+                         std::to_string(expected_delay_chips));
 
     config->set_property("SignalSource.noise_flag", "false");
     config->set_property("SignalSource.data_flag", "false");
@@ -262,9 +270,9 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_1()
     config->set_property("Acquisition.item_type", "gr_complex");
     config->set_property("Acquisition.if", "0");
     config->set_property("Acquisition.coherent_integration_time_ms",
-            std::to_string(integration_time_ms));
+                         std::to_string(integration_time_ms));
     config->set_property("Acquisition.max_dwells", "1");
-    config->set_property("Acquisition.bit_transition_flag","false");
+    config->set_property("Acquisition.bit_transition_flag", "false");
     config->set_property("Acquisition.implementation", "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition");
     config->set_property("Acquisition.threshold", "1");
     config->set_property("Acquisition.doppler_max", "10000");
@@ -273,8 +281,7 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_1()
     config->set_property("Acquisition.dump", "false");
 }
 
-void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_2()
-{
+void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_2() {
     gnss_synchro.Channel_ID = 0;
     gnss_synchro.System = 'E';
     std::string signal = "1C";
@@ -308,9 +315,9 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_2()
     config->set_property("SignalSource.PRN_0", "10");
     config->set_property("SignalSource.CN0_dB_0", std::to_string(FLAGS_e1_value_CN0_dB_0));
     config->set_property("SignalSource.doppler_Hz_0",
-            std::to_string(expected_doppler_hz));
+                         std::to_string(expected_doppler_hz));
     config->set_property("SignalSource.delay_chips_0",
-            std::to_string(expected_delay_chips));
+                         std::to_string(expected_delay_chips));
 
     config->set_property("SignalSource.system_1", "E");
     config->set_property("SignalSource.PRN_1", "15");
@@ -356,9 +363,9 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_2()
     config->set_property("Acquisition.item_type", "gr_complex");
     config->set_property("Acquisition.if", "0");
     config->set_property("Acquisition.coherent_integration_time_ms",
-            std::to_string(integration_time_ms));
+                         std::to_string(integration_time_ms));
     config->set_property("Acquisition.max_dwells", "1");
-    config->set_property("Acquisition.bit_transition_flag","false");
+    config->set_property("Acquisition.bit_transition_flag", "false");
     config->set_property("Acquisition.implementation", "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition");
     config->set_property("Acquisition.threshold", std::to_string(FLAGS_e1_value_threshold));
     config->set_property("Acquisition.doppler_max", "10000");
@@ -368,8 +375,7 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_2()
 }
 
 
-void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_3()
-{
+void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_3() {
     gnss_synchro.Channel_ID = 0;
     gnss_synchro.System = 'E';
     std::string signal = "1C";
@@ -399,9 +405,9 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_3()
     config->set_property("SignalSource.PRN_0", "10");
     config->set_property("SignalSource.CN0_dB_0", std::to_string(FLAGS_e1_value_CN0_dB_0));
     config->set_property("SignalSource.doppler_Hz_0",
-            std::to_string(expected_doppler_hz));
+                         std::to_string(expected_doppler_hz));
     config->set_property("SignalSource.delay_chips_0",
-            std::to_string(expected_delay_chips));
+                         std::to_string(expected_delay_chips));
 
     config->set_property("SignalSource.system_1", "E");
     config->set_property("SignalSource.PRN_1", "15");
@@ -447,9 +453,9 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_3()
     config->set_property("Acquisition.item_type", "gr_complex");
     config->set_property("Acquisition.if", "0");
     config->set_property("Acquisition.coherent_integration_time_ms",
-            std::to_string(integration_time_ms));
+                         std::to_string(integration_time_ms));
     config->set_property("Acquisition.max_dwells", "1");
-    config->set_property("Acquisition.bit_transition_flag","false");
+    config->set_property("Acquisition.bit_transition_flag", "false");
     config->set_property("Acquisition.implementation", "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition");
     config->set_property("Acquisition.threshold", "0.2");
     config->set_property("Acquisition.doppler_max", "10000");
@@ -458,435 +464,676 @@ void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::config_3()
     config->set_property("Acquisition.dump", "false");
 }
 
-void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::start_queue()
-{
+void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::start_queue() {
     stop = false;
     ch_thread = boost::thread(&GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::wait_message, this);
 }
 
-void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::wait_message()
-{
+void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::wait_message() {
     struct timeval tv;
     long long int begin = 0;
     long long int end = 0;
 
-    while (!stop)
-        {
-            acquisition->reset();
+    while (!stop) {
+        acquisition->reset();
 
-            gettimeofday(&tv, NULL);
-            begin = tv.tv_sec*1e6 + tv.tv_usec;
+        gettimeofday(&tv, NULL);
+        begin = tv.tv_sec * 1e6 + tv.tv_usec;
 
-            channel_internal_queue.wait_and_pop(message);
+        channel_internal_queue.wait_and_pop(message);
 
-            gettimeofday(&tv, NULL);
-            end = tv.tv_sec*1e6 + tv.tv_usec;
+        gettimeofday(&tv, NULL);
+        end = tv.tv_sec * 1e6 + tv.tv_usec;
 
-            mean_acq_time_us += (end - begin);
+        mean_acq_time_us += (end - begin);
 
-            process_message();
-        }
+        process_message();
+    }
 }
 
-void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::process_message()
-{
-    if (message == 1)
-        {
-            detection_counter++;
+void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::process_message() {
+    if (message == 1) {
+        detection_counter++;
 
-            // The term -5 is here to correct the additional delay introduced by the FIR filter
-            double delay_error_chips = std::abs((double)expected_delay_chips - (double)(gnss_synchro.Acq_delay_samples - 5) * 1023.0 / ((double)fs_in * 1e-3));
-            double doppler_error_hz = std::abs(expected_doppler_hz - gnss_synchro.Acq_doppler_hz);
+        // The term -5 is here to correct the additional delay introduced by the FIR filter
+        double delay_error_chips = std::abs((double) expected_delay_chips -
+                                            (double) (gnss_synchro.Acq_delay_samples - 5) * 1023.0 /
+                                            ((double) fs_in * 1e-3));
+        double doppler_error_hz = std::abs(expected_doppler_hz - gnss_synchro.Acq_doppler_hz);
 
-            mse_delay += std::pow(delay_error_chips, 2);
-            mse_doppler += std::pow(doppler_error_hz, 2);
+        mse_delay += std::pow(delay_error_chips, 2);
+        mse_doppler += std::pow(doppler_error_hz, 2);
 
-            if ((delay_error_chips < max_delay_error_chips) && (doppler_error_hz < max_doppler_error_hz))
-                {
-                    correct_estimation_counter++;
-                }
-
+        if ((delay_error_chips < max_delay_error_chips) && (doppler_error_hz < max_doppler_error_hz)) {
+            correct_estimation_counter++;
         }
-    else if(message == 2 &&  gnss_synchro.PRN == 10)
-        {
-            /*
-               if ((delay_error_chips < max_delay_error_chips) && (doppler_error_hz < max_doppler_error_hz))
-        {
-               miss_detection_counter++;
-        }
-             */
-            miss_detection_counter++;
-        }
+
+    } else if (message == 2 && gnss_synchro.PRN == 10) {
+        /*
+           if ((delay_error_chips < max_delay_error_chips) && (doppler_error_hz < max_doppler_error_hz))
+    {
+           miss_detection_counter++;
+    }
+         */
+        miss_detection_counter++;
+    }
 
     realization_counter++;
 
-    std::cout << "Progress: " << round((float)realization_counter / num_of_realizations * 100) << "% \r" << std::flush;
+    std::cout << "Progress: " << round((float) realization_counter / num_of_realizations * 100) << "% \r" << std::flush;
 
-    if (realization_counter == num_of_realizations)
-        {
-            mse_delay /= (double)num_of_realizations;
-            mse_doppler /= (double)num_of_realizations;
+    if (realization_counter == num_of_realizations) {
+        mse_delay /= (double) num_of_realizations;
+        mse_doppler /= (double) num_of_realizations;
 
-            Pd = (double)correct_estimation_counter / (double)num_of_realizations;
-            Pfa_a = (double)detection_counter / (double)num_of_realizations;
-            Pfa_p = (double)(detection_counter - correct_estimation_counter) / (double)num_of_realizations;
-            Pmd = (double)miss_detection_counter / (double)num_of_realizations;
+        Pd = (double) correct_estimation_counter / (double) num_of_realizations;
+        Pfa_a = (double) detection_counter / (double) num_of_realizations;
+        Pfa_p = (double) (detection_counter - correct_estimation_counter) / (double) num_of_realizations;
+        Pmd = (double) miss_detection_counter / (double) num_of_realizations;
 
-            mean_acq_time_us /= (double)num_of_realizations;
+        mean_acq_time_us /= (double) num_of_realizations;
 
-            stop_queue();
-            top_block->stop();
-        }
+        stop_queue();
+        top_block->stop();
+    }
 }
 
-void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::stop_queue()
-{
+void GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test::stop_queue() {
     stop = true;
 }
 
 
-TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, Instantiate)
+TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, Instantiate
+)
 {
-    config_1();
-    std::shared_ptr<GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition", "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
-    acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
+config_1();
+
+std::shared_ptr <GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition",
+                                                              "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
+acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
 }
 
 
-TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, ConnectAndRun)
+TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, ConnectAndRun
+)
 {
-    LOG(INFO) << "**Start connect and run test";
-    int nsamples = floor(fs_in*integration_time_ms*1e-3);
-    struct timeval tv;
-    long long int begin = 0;
-    long long int end = 0;
-    top_block = gr::make_top_block("Acquisition test");
-    queue = gr::msg_queue::make(0);
+LOG(INFO)
+<< "**Start connect and run test";
+int nsamples = floor(fs_in * integration_time_ms * 1e-3);
+struct timeval tv;
+long long int begin = 0;
+long long int end = 0;
+top_block = gr::make_top_block("Acquisition test");
+queue = gr::msg_queue::make(0);
 
-    config_1();
+config_1();
 
-    std::shared_ptr<GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition", "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
-    acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
-    boost::shared_ptr<GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> msg_rx = GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(channel_internal_queue);
+std::shared_ptr <GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition",
+                                                              "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
+acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
+boost::shared_ptr <GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> msg_rx = GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(
+        channel_internal_queue);
 
-    ASSERT_NO_THROW( {
-        acquisition->connect(top_block);
-        boost::shared_ptr<gr::analog::sig_source_c> source =
-                gr::analog::sig_source_c::make(fs_in, gr::analog::GR_SIN_WAVE, 1000, 1, gr_complex(0));
-        boost::shared_ptr<gr::block> valve =
-                gnss_sdr_make_valve(sizeof(gr_complex), nsamples, queue);
-        top_block->connect(source, 0, valve, 0);
-        top_block->connect(valve, 0, acquisition->get_left_block(), 0);
-        top_block->msg_connect(acquisition->get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events"));
-    }) << "Failure connecting the blocks of acquisition test."<< std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+connect(top_block);
+boost::shared_ptr <gr::analog::sig_source_c> source =
+        gr::analog::sig_source_c::make(fs_in, gr::analog::GR_SIN_WAVE, 1000, 1, gr_complex(0));
+boost::shared_ptr <gr::block> valve =
+        gnss_sdr_make_valve(sizeof(gr_complex), nsamples, queue);
+top_block->
+connect(source,
+0, valve, 0);
+top_block->
+connect(valve,
+0, acquisition->
 
-    EXPECT_NO_THROW( {
-        gettimeofday(&tv, NULL);
-        begin = tv.tv_sec * 1e6 + tv.tv_usec;
-        top_block->run(); // Start threads and wait
-        gettimeofday(&tv, NULL);
-        end = tv.tv_sec * 1e6 + tv.tv_usec;
-    }) << "Failure running the top_block."<< std::endl;
+get_left_block(),
 
-    std::cout << "Processed " << nsamples << " samples in " << (end - begin) << " microseconds" << std::endl;
-    LOG(INFO) << "----end connect and run test-----";
-    LOG(INFO) << "**End connect and run test";
+0);
+top_block->
+msg_connect(acquisition
+->
+
+get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events")
+
+);
+}) << "Failure connecting the blocks of acquisition test."<<
+std::endl;
+
+EXPECT_NO_THROW( {
+gettimeofday(&tv, NULL
+);
+begin = tv.tv_sec * 1e6 + tv.tv_usec;
+top_block->
+
+run(); // Start threads and wait
+gettimeofday(&tv, NULL
+);
+end = tv.tv_sec * 1e6 + tv.tv_usec;
+}) << "Failure running the top_block."<<
+std::endl;
+
+std::cout << "Processed " << nsamples << " samples in " << (end - begin) << " microseconds" <<
+std::endl;
+LOG(INFO)
+<< "----end connect and run test-----";
+LOG(INFO)
+<< "**End connect and run test";
 }
 
-TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, ValidationOfResults)
+TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, ValidationOfResults
+)
 {
-    LOG(INFO) << "Start validation of results test";
-    config_1();
-    top_block = gr::make_top_block("Acquisition test");
-    queue = gr::msg_queue::make(0);
+LOG(INFO)
+<< "Start validation of results test";
 
-    std::shared_ptr<GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition", "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
-    acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
-    boost::shared_ptr<GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> msg_rx = GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(channel_internal_queue);
+config_1();
 
-    ASSERT_NO_THROW( {
-        acquisition->set_channel(0);
-    }) << "Failure setting channel."<< std::endl;
+top_block = gr::make_top_block("Acquisition test");
+queue = gr::msg_queue::make(0);
 
-    ASSERT_NO_THROW( {
-        acquisition->set_gnss_synchro(&gnss_synchro);
-    }) << "Failure setting gnss_synchro."<< std::endl;
+std::shared_ptr <GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition",
+                                                              "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
+acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
+boost::shared_ptr <GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> msg_rx = GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(
+        channel_internal_queue);
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_max(config->property("Acquisition.doppler_max", 10000));
-    }) << "Failure setting doppler_max."<< std::endl;
+ASSERT_NO_THROW( {
+acquisition->set_channel(0);
+}) << "Failure setting channel."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_step(config->property("Acquisition.doppler_step", 125));
-    }) << "Failure setting doppler_step."<< std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_gnss_synchro(&gnss_synchro);
+}) << "Failure setting gnss_synchro."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->set_threshold(1);
-    }) << "Failure setting threshold."<< std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_doppler_max(config
+->property("Acquisition.doppler_max", 10000));
+}) << "Failure setting doppler_max."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->connect(top_block);
-    }) << "Failure connecting acquisition to the top_block." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_doppler_step(config
+->property("Acquisition.doppler_step", 125));
+}) << "Failure setting doppler_step."<<
+std::endl;
 
-    acquisition->init();
-    acquisition->reset();
+ASSERT_NO_THROW( {
+acquisition->set_threshold(1);
+}) << "Failure setting threshold."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        boost::shared_ptr<GenSignalSource> signal_source;
-        SignalGenerator* signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
-        FirFilter* filter = new FirFilter(config.get(), "InputFilter", 1, 1);
-        signal_source.reset(new GenSignalSource(signal_generator, filter, "SignalSource", queue));
-        signal_source->connect(top_block);
-        top_block->connect(signal_source->get_right_block(), 0, acquisition->get_left_block(), 0);
-        top_block->msg_connect(acquisition->get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events"));
-    }) << "Failure connecting the blocks of acquisition test." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+connect(top_block);
+}) << "Failure connecting acquisition to the top_block." <<
+std::endl;
+
+acquisition->
+
+init();
+
+acquisition->
+
+reset();
+
+ASSERT_NO_THROW( {
+boost::shared_ptr <GenSignalSource> signal_source;
+SignalGenerator *signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
+FirFilter *filter = new FirFilter(config.get(), "InputFilter", 1, 1);
+signal_source.reset(new
+GenSignalSource(signal_generator, filter,
+"SignalSource", queue));
+signal_source->
+connect(top_block);
+top_block->
+connect(signal_source
+->
+
+get_right_block(),
+
+0, acquisition->
+
+get_left_block(),
+
+0);
+top_block->
+msg_connect(acquisition
+->
+
+get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events")
+
+);
+}) << "Failure connecting the blocks of acquisition test." <<
+std::endl;
 
 
-    // i = 0 --> satellite in acquisition is visible
-    // i = 1 --> satellite in acquisition is not visible
-    for (unsigned int i = 0; i < 2; i++)
-        {
-            init();
+// i = 0 --> satellite in acquisition is visible
+// i = 1 --> satellite in acquisition is not visible
+for (
+unsigned int i = 0;
+i < 2; i++)
+{
+init();
 
-            if (i == 0)
-                {
-                    gnss_synchro.PRN = 10; // This satellite is visible
-                }
-            else if (i == 1)
-                {
-                    gnss_synchro.PRN = 20; // This satellite is not visible
-                }
-            acquisition->set_gnss_synchro(&gnss_synchro);
-            acquisition->set_local_code();
-            acquisition->reset();
-            acquisition->set_state(1);
-            start_queue();
+if (i == 0)
+{
+gnss_synchro.
+PRN = 10; // This satellite is visible
+}
+else if (i == 1)
+{
+gnss_synchro.
+PRN = 20; // This satellite is not visible
+}
+acquisition->
+set_gnss_synchro(&gnss_synchro);
+acquisition->
 
-            EXPECT_NO_THROW( {
-                top_block->run(); // Start threads and wait
-            }) << "Failure running the top_block."<< std::endl;
+set_local_code();
 
-            stop_queue();
+acquisition->
 
-            if (i == 0)
-                {
-                    EXPECT_EQ(1, message) << "Acquisition failure. Expected message: 1=ACQ SUCCESS.";
-                    EXPECT_EQ((unsigned int)1, correct_estimation_counter) << "Acquisition failure. Incorrect parameters estimation.";
-                }
-            else if (i == 1)
-                {
-                    EXPECT_EQ(2, message) << "Acquisition failure. Expected message: 2=ACQ FAIL.";
-                }
+reset();
 
-            ch_thread.join();
-        }
-    DLOG(INFO) << "End validation of results test";
+acquisition->set_state(1);
+
+start_queue();
+
+EXPECT_NO_THROW( {
+top_block->
+
+run(); // Start threads and wait
+}) << "Failure running the top_block."<<
+std::endl;
+
+stop_queue();
+
+if (i == 0)
+{
+EXPECT_EQ(1, message) << "Acquisition failure. Expected message: 1=ACQ SUCCESS.";
+EXPECT_EQ((
+unsigned int)1, correct_estimation_counter) << "Acquisition failure. Incorrect parameters estimation.";
+}
+else if (i == 1)
+{
+EXPECT_EQ(2, message) << "Acquisition failure. Expected message: 2=ACQ FAIL.";
+}
+
+ch_thread.
+
+join();
+
+}
+DLOG(INFO)
+<< "End validation of results test";
 }
 
 
-TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, ValidationOfResultsWithNoise)
+TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, ValidationOfResultsWithNoise
+)
 {
-    LOG(INFO) << "Start validation of results with noise+interference test";
-    config_3();
-    top_block = gr::make_top_block("Acquisition test");
-    queue = gr::msg_queue::make(0);
+LOG(INFO)
+<< "Start validation of results with noise+interference test";
 
-    std::shared_ptr<GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition", "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
-    acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
-    boost::shared_ptr<GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> msg_rx = GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(channel_internal_queue);
+config_3();
 
-    ASSERT_NO_THROW( {
-        acquisition->set_channel(1);
-    }) << "Failure setting channel."<< std::endl;
+top_block = gr::make_top_block("Acquisition test");
+queue = gr::msg_queue::make(0);
 
-    ASSERT_NO_THROW( {
-        acquisition->set_gnss_synchro(&gnss_synchro);
-    }) << "Failure setting gnss_synchro."<< std::endl;
+std::shared_ptr <GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition",
+                                                              "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
+acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
+boost::shared_ptr <GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> msg_rx = GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(
+        channel_internal_queue);
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_max(config->property("Acquisition.doppler_max", 10000));
-    }) << "Failure setting doppler_max."<< std::endl;
+ASSERT_NO_THROW( {
+acquisition->set_channel(1);
+}) << "Failure setting channel."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_step(50);
-    }) << "Failure setting doppler_step."<< std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_gnss_synchro(&gnss_synchro);
+}) << "Failure setting gnss_synchro."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->set_threshold(5);
-    }) << "Failure setting threshold."<< std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_doppler_max(config
+->property("Acquisition.doppler_max", 10000));
+}) << "Failure setting doppler_max."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->connect(top_block);
-    }) << "Failure connecting acquisition to the top_block." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->set_doppler_step(50);
+}) << "Failure setting doppler_step."<<
+std::endl;
 
-    acquisition->init();
-    acquisition->reset();
+ASSERT_NO_THROW( {
+acquisition->set_threshold(5);
+}) << "Failure setting threshold."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        boost::shared_ptr<GenSignalSource> signal_source;
-        SignalGenerator* signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
-        FirFilter* filter = new FirFilter(config.get(), "InputFilter", 1, 1);
-        signal_source.reset(new GenSignalSource(signal_generator, filter, "SignalSource", queue));
-        signal_source->connect(top_block);
-        top_block->connect(signal_source->get_right_block(), 0, acquisition->get_left_block(), 0);
-        top_block->msg_connect(acquisition->get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events"));
-    }) << "Failure connecting the blocks of acquisition test." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+connect(top_block);
+}) << "Failure connecting acquisition to the top_block." <<
+std::endl;
 
-    // i = 0 --> satellite in acquisition is visible
-    // i = 1 --> satellite in acquisition is not visible
-    for (unsigned int i = 0; i < 2; i++)
-        {
-            init();
+acquisition->
 
-            if (i == 0)
-                {
-                    gnss_synchro.PRN = 10; // This satellite is visible
-                }
-            else if (i == 1)
-                {
-                    gnss_synchro.PRN = 20; // This satellite is not visible
-                }
+init();
 
-            acquisition->set_gnss_synchro(&gnss_synchro);
-            acquisition->set_local_code();
-            acquisition->reset();
-            acquisition->set_state(1);
-            start_queue();
+acquisition->
 
-            EXPECT_NO_THROW( {
-                top_block->run(); // Start threads and wait
-            }) << "Failure running the top_block." << std::endl;
+reset();
 
-            stop_queue();
-            if (i == 0)
-                {
-                    EXPECT_EQ(1, message) << "Acquisition failure. Expected message: 1=ACQ SUCCESS.";
-                    EXPECT_EQ((unsigned int)1, correct_estimation_counter) << "Acquisition failure. Incorrect parameters estimation.";
-                }
-            else if (i == 1)
-                {
-                    EXPECT_EQ(2, message) << "Acquisition failure. Expected message: 2=ACQ FAIL.";
-                }
-            ch_thread.join();
-        }
-    DLOG(INFO) << "End validation of results with noise+interference test";
+ASSERT_NO_THROW( {
+boost::shared_ptr <GenSignalSource> signal_source;
+SignalGenerator *signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
+FirFilter *filter = new FirFilter(config.get(), "InputFilter", 1, 1);
+signal_source.reset(new
+GenSignalSource(signal_generator, filter,
+"SignalSource", queue));
+signal_source->
+connect(top_block);
+top_block->
+connect(signal_source
+->
+
+get_right_block(),
+
+0, acquisition->
+
+get_left_block(),
+
+0);
+top_block->
+msg_connect(acquisition
+->
+
+get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events")
+
+);
+}) << "Failure connecting the blocks of acquisition test." <<
+std::endl;
+
+// i = 0 --> satellite in acquisition is visible
+// i = 1 --> satellite in acquisition is not visible
+for (
+unsigned int i = 0;
+i < 2; i++)
+{
+init();
+
+if (i == 0)
+{
+gnss_synchro.
+PRN = 10; // This satellite is visible
+}
+else if (i == 1)
+{
+gnss_synchro.
+PRN = 20; // This satellite is not visible
 }
 
-TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, ValidationOfResultsProbabilities)
+acquisition->
+set_gnss_synchro(&gnss_synchro);
+acquisition->
+
+set_local_code();
+
+acquisition->
+
+reset();
+
+acquisition->set_state(1);
+
+start_queue();
+
+EXPECT_NO_THROW( {
+top_block->
+
+run(); // Start threads and wait
+}) << "Failure running the top_block." <<
+std::endl;
+
+stop_queue();
+
+if (i == 0)
 {
-    config_2();
-    top_block = gr::make_top_block("Acquisition test");
-    queue = gr::msg_queue::make(0);
+EXPECT_EQ(1, message) << "Acquisition failure. Expected message: 1=ACQ SUCCESS.";
+EXPECT_EQ((
+unsigned int)1, correct_estimation_counter) << "Acquisition failure. Incorrect parameters estimation.";
+}
+else if (i == 1)
+{
+EXPECT_EQ(2, message) << "Acquisition failure. Expected message: 2=ACQ FAIL.";
+}
+ch_thread.
 
-    std::shared_ptr<GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition", "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
-    acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
-    boost::shared_ptr<GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> msg_rx = GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(channel_internal_queue);
+join();
 
-    ASSERT_NO_THROW( {
-        acquisition->set_channel(1);
-    }) << "Failure setting channel."<< std::endl;
+}
+DLOG(INFO)
+<< "End validation of results with noise+interference test";
+}
 
-    ASSERT_NO_THROW( {
-        acquisition->set_gnss_synchro(&gnss_synchro);
-    }) << "Failure setting gnss_synchro."<< std::endl;
+TEST_F(GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test, ValidationOfResultsProbabilities
+)
+{
+config_2();
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_max(config->property("Acquisition.doppler_max", 10000));
-    }) << "Failure setting doppler_max."<< std::endl;
+top_block = gr::make_top_block("Acquisition test");
+queue = gr::msg_queue::make(0);
 
-    ASSERT_NO_THROW( {
-        acquisition->set_doppler_step(config->property("Acquisition.doppler_step", 500));
-    }) << "Failure setting doppler_step."<< std::endl;
+std::shared_ptr <GNSSBlockInterface> acq_ = factory->GetBlock(config, "Acquisition",
+                                                              "Galileo_E1_PCPS_QuickSync_Ambiguous_Acquisition", 1, 1);
+acquisition = std::dynamic_pointer_cast<GalileoE1PcpsQuickSyncAmbiguousAcquisition>(acq_);
+boost::shared_ptr <GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx> msg_rx = GalileoE1PcpsQuickSyncAmbiguousAcquisitionGSoC2014Test_msg_rx_make(
+        channel_internal_queue);
 
-    ASSERT_NO_THROW( {
-        acquisition->set_threshold(config->property("Acquisition.threshold", 0.0));
-    }) << "Failure setting threshold."<< std::endl;
+ASSERT_NO_THROW( {
+acquisition->set_channel(1);
+}) << "Failure setting channel."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        acquisition->connect(top_block);
-    }) << "Failure connecting acquisition to the top_block." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_gnss_synchro(&gnss_synchro);
+}) << "Failure setting gnss_synchro."<<
+std::endl;
 
-    acquisition->init();
+ASSERT_NO_THROW( {
+acquisition->
+set_doppler_max(config
+->property("Acquisition.doppler_max", 10000));
+}) << "Failure setting doppler_max."<<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        boost::shared_ptr<GenSignalSource> signal_source;
-        SignalGenerator* signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
-        FirFilter* filter = new FirFilter(config.get(), "InputFilter", 1, 1);
-        signal_source.reset(new GenSignalSource(signal_generator, filter, "SignalSource", queue));
-        signal_source->connect(top_block);
-        top_block->connect(signal_source->get_right_block(), 0, acquisition->get_left_block(), 0);
-        top_block->msg_connect(acquisition->get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events"));
-    }) << "Failure connecting the blocks of acquisition test." << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_doppler_step(config
+->property("Acquisition.doppler_step", 500));
+}) << "Failure setting doppler_step."<<
+std::endl;
 
-    std::cout << "Probability of false alarm (target) = " << 0.1 << std::endl;
+ASSERT_NO_THROW( {
+acquisition->
+set_threshold(config
+->property("Acquisition.threshold", 0.0));
+}) << "Failure setting threshold."<<
+std::endl;
 
-    // i = 0 --> satellite in acquisition is visible (prob of detection and prob of detection with wrong estimation)
-    // i = 1 --> satellite in acquisition is not visible (prob of false detection)
-    for (unsigned int i = 0; i < 2; i++)
-        {
-            init();
+ASSERT_NO_THROW( {
+acquisition->
+connect(top_block);
+}) << "Failure connecting acquisition to the top_block." <<
+std::endl;
 
-            if (i == 0)
-                {
-                    gnss_synchro.PRN = 10; // This satellite is visible
-                }
-            else if (i == 1)
-                {
-                    gnss_synchro.PRN = 20; // This satellite is not visible
-                }
+acquisition->
 
-            acquisition->set_gnss_synchro(&gnss_synchro);
-            acquisition->set_local_code();
-            acquisition->reset();
-            acquisition->set_state(1);
-            start_queue();
+init();
 
-            EXPECT_NO_THROW( {
-                top_block->run(); // Start threads and wait
-            }) << "Failure running the top_block." << std::endl;
+ASSERT_NO_THROW( {
+boost::shared_ptr <GenSignalSource> signal_source;
+SignalGenerator *signal_generator = new SignalGenerator(config.get(), "SignalSource", 0, 1, queue);
+FirFilter *filter = new FirFilter(config.get(), "InputFilter", 1, 1);
+signal_source.reset(new
+GenSignalSource(signal_generator, filter,
+"SignalSource", queue));
+signal_source->
+connect(top_block);
+top_block->
+connect(signal_source
+->
 
-            stop_queue();
+get_right_block(),
 
-            if (i == 0)
-                {
-                    std::cout << "Estimated probability of detection = " << Pd << std::endl;
-                    std::cout << "Estimated probability of false alarm (satellite present) = " << Pfa_p << std::endl;
-                    std::cout << "Estimated probability of miss detection (satellite present) = " << Pmd << std::endl;
-                    std::cout << "Mean acq time = " << mean_acq_time_us << " microseconds." << std::endl;
+0, acquisition->
 
-                    if(dump_test_results)
-                        {
-                            std::stringstream filenamepd;
-                            filenamepd.str("");
-                            filenamepd << "../data/test_statistics_" << gnss_synchro.System
-                                    << "_" << gnss_synchro.Signal << "_sat_"
-                                    << gnss_synchro.PRN  << "CN0_dB_0_" << FLAGS_e1_value_CN0_dB_0 << "_dBHz.csv";
+get_left_block(),
 
-                            pdpfafile.open(filenamepd.str().c_str(), std::ios::app | std::ios::out);
-                            pdpfafile << FLAGS_e1_value_threshold << "," << Pd << "," << Pfa_p << "," << Pmd << std::endl;
-                            pdpfafile.close();
-                        }
+0);
+top_block->
+msg_connect(acquisition
+->
+
+get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events")
+
+);
+}) << "Failure connecting the blocks of acquisition test." <<
+std::endl;
+
+std::cout << "Probability of false alarm (target) = " << 0.1 <<
+std::endl;
+
+// i = 0 --> satellite in acquisition is visible (prob of detection and prob of detection with wrong estimation)
+// i = 1 --> satellite in acquisition is not visible (prob of false detection)
+for (
+unsigned int i = 0;
+i < 2; i++)
+{
+init();
+
+if (i == 0)
+{
+gnss_synchro.
+PRN = 10; // This satellite is visible
+}
+else if (i == 1)
+{
+gnss_synchro.
+PRN = 20; // This satellite is not visible
+}
+
+acquisition->
+set_gnss_synchro(&gnss_synchro);
+acquisition->
+
+set_local_code();
+
+acquisition->
+
+reset();
+
+acquisition->set_state(1);
+
+start_queue();
+
+EXPECT_NO_THROW( {
+top_block->
+
+run(); // Start threads and wait
+}) << "Failure running the top_block." <<
+std::endl;
+
+stop_queue();
+
+if (i == 0)
+{
+std::cout << "Estimated probability of detection = " << Pd <<
+std::endl;
+std::cout << "Estimated probability of false alarm (satellite present) = " << Pfa_p <<
+std::endl;
+std::cout << "Estimated probability of miss detection (satellite present) = " << Pmd <<
+std::endl;
+std::cout << "Mean acq time = " << mean_acq_time_us << " microseconds." <<
+std::endl;
+
+if(dump_test_results)
+{
+std::stringstream filenamepd;
+filenamepd.str("");
+filenamepd << "../data/test_statistics_" << gnss_synchro.System
+<< "_" << gnss_synchro.Signal << "_sat_"
+<< gnss_synchro.PRN  << "CN0_dB_0_" << FLAGS_e1_value_CN0_dB_0 << "_dBHz.csv";
+
+pdpfafile.
+open(filenamepd
+.
+
+str()
+
+.
+
+c_str(), std::ios::app
+
+| std::ios::out);
+pdpfafile << FLAGS_e1_value_threshold << "," << Pd << "," << Pfa_p << "," << Pmd <<
+std::endl;
+pdpfafile.
+
+close();
+
+}
 
 
-                }
-            else if (i == 1)
-                {
-                    std::cout << "Estimated probability of false alarm (satellite absent) = " << Pfa_a << std::endl;
-                    std::cout << "Mean acq time = " << mean_acq_time_us << " microseconds." << std::endl;
+}
+else if (i == 1)
+{
+std::cout << "Estimated probability of false alarm (satellite absent) = " << Pfa_a <<
+std::endl;
+std::cout << "Mean acq time = " << mean_acq_time_us << " microseconds." <<
+std::endl;
 
-                    if(dump_test_results)
-                        {
-                            std::stringstream filenamepf;
-                            filenamepf.str("");
-                            filenamepf << "../data/test_statistics_" << gnss_synchro.System
-                                    << "_" << gnss_synchro.Signal << "_sat_"
-                                    << gnss_synchro.PRN  << "CN0_dB_0_" << FLAGS_e1_value_CN0_dB_0 << "_dBHz.csv";
+if(dump_test_results)
+{
+std::stringstream filenamepf;
+filenamepf.str("");
+filenamepf << "../data/test_statistics_" << gnss_synchro.System
+<< "_" << gnss_synchro.Signal << "_sat_"
+<< gnss_synchro.PRN  << "CN0_dB_0_" << FLAGS_e1_value_CN0_dB_0 << "_dBHz.csv";
 
-                            pdpfafile.open(filenamepf.str().c_str(), std::ios::app | std::ios::out);
-                            pdpfafile << FLAGS_e1_value_threshold << "," << Pfa_a << std::endl;
-                            pdpfafile.close();
-                        }
-                }
-            ch_thread.join();
-        }
+pdpfafile.
+open(filenamepf
+.
+
+str()
+
+.
+
+c_str(), std::ios::app
+
+| std::ios::out);
+pdpfafile << FLAGS_e1_value_threshold << "," << Pfa_a <<
+std::endl;
+pdpfafile.
+
+close();
+
+}
+}
+ch_thread.
+
+join();
+
+}
 }

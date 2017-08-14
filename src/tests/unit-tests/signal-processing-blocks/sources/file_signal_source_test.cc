@@ -37,8 +37,7 @@
 #include "file_signal_source.h"
 #include "in_memory_configuration.h"
 
-TEST(FileSignalSource, Instantiate)
-{
+TEST(FileSignalSource, Instantiate) {
     boost::shared_ptr<gr::msg_queue> queue = gr::msg_queue::make(0);
     std::shared_ptr<InMemoryConfiguration> config = std::make_shared<InMemoryConfiguration>();
 
@@ -56,8 +55,7 @@ TEST(FileSignalSource, Instantiate)
     EXPECT_TRUE(signal_source->repeat() == false);
 }
 
-TEST(FileSignalSource, InstantiateFileNotExists)
-{
+TEST(FileSignalSource, InstantiateFileNotExists) {
     boost::shared_ptr<gr::msg_queue> queue = gr::msg_queue::make(0);
     std::shared_ptr<InMemoryConfiguration> config = std::make_shared<InMemoryConfiguration>();
 
@@ -67,5 +65,6 @@ TEST(FileSignalSource, InstantiateFileNotExists)
     config->set_property("Test.item_type", "gr_complex");
     config->set_property("Test.repeat", "false");
 
-    EXPECT_THROW({auto uptr = std::make_shared<FileSignalSource>(config.get(), "Test", 1, 1, queue);}, std::exception);
+    EXPECT_THROW({ auto uptr = std::make_shared<FileSignalSource>(config.get(), "Test", 1, 1, queue); },
+                 std::exception);
 }

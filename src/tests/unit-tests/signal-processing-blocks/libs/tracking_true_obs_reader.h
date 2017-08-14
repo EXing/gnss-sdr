@@ -36,14 +36,18 @@
 #include <string>
 #include <vector>
 
-class tracking_true_obs_reader
-{
+class tracking_true_obs_reader {
 public:
     ~tracking_true_obs_reader();
+
     bool read_binary_obs();
+
     bool restart();
+
     long int num_epochs();
+
     bool open_obs_file(std::string out_file);
+
     bool d_dump;
 
     double signal_timestamp_s;

@@ -37,63 +37,90 @@
 //#include "gps_ephemeris.h"
 
 
-TEST(Rtcm_Printer_Test, Instantiate)
+TEST(Rtcm_Printer_Test, Instantiate
+)
 {
-    std::string filename = "hello.rtcm";
-    bool flag_rtcm_tty_port = false;
-    std::string rtcm_dump_devname = "/dev/pts/4";
-    bool flag_rtcm_server = false;
-    unsigned short rtcm_tcp_port = 2101;
-    unsigned short rtcm_station_id = 1234;
-    std::unique_ptr<Rtcm_Printer> RTCM_printer(new Rtcm_Printer(filename, flag_rtcm_server, flag_rtcm_tty_port, rtcm_tcp_port, rtcm_station_id, rtcm_dump_devname));
+std::string filename = "hello.rtcm";
+bool flag_rtcm_tty_port = false;
+std::string rtcm_dump_devname = "/dev/pts/4";
+bool flag_rtcm_server = false;
+unsigned short rtcm_tcp_port = 2101;
+unsigned short rtcm_station_id = 1234;
+std::unique_ptr <Rtcm_Printer> RTCM_printer(
+        new Rtcm_Printer(filename, flag_rtcm_server, flag_rtcm_tty_port, rtcm_tcp_port, rtcm_station_id,
+                         rtcm_dump_devname));
 }
 
 
-TEST(Rtcm_Printer_Test, Run)
+TEST(Rtcm_Printer_Test, Run
+)
 {
-    //    std::string file_name = "./gps_ephemeris_rx.xml";
-    //    std::map<int,Gps_Ephemeris> gps_ephemeris_map;
-    //    try
-    //    {
-    //            std::ifstream ifs(file_name.c_str(), std::ifstream::binary | std::ifstream::in);
-    //            boost::archive::xml_iarchive xml(ifs);
-    //            gps_ephemeris_map.clear();
-    //            xml >> boost::serialization::make_nvp("GNSS-SDR_ephemeris_map", gps_ephemeris_map);
-    //            ifs.close();
-    //    }
-    //    catch (std::exception& e)
-    //    {
-    //            //LOG(WARNING) << e.what() << "File: " << file_name;
-    //            //std::cout << "File not found" << std::endl;
-    //    }
+//    std::string file_name = "./gps_ephemeris_rx.xml";
+//    std::map<int,Gps_Ephemeris> gps_ephemeris_map;
+//    try
+//    {
+//            std::ifstream ifs(file_name.c_str(), std::ifstream::binary | std::ifstream::in);
+//            boost::archive::xml_iarchive xml(ifs);
+//            gps_ephemeris_map.clear();
+//            xml >> boost::serialization::make_nvp("GNSS-SDR_ephemeris_map", gps_ephemeris_map);
+//            ifs.close();
+//    }
+//    catch (std::exception& e)
+//    {
+//            //LOG(WARNING) << e.what() << "File: " << file_name;
+//            //std::cout << "File not found" << std::endl;
+//    }
 
-    std::string filename = "test.rtcm";
-    bool flag_rtcm_tty_port = false;
-    std::string rtcm_dump_devname = "/dev/pts/4";
-    bool flag_rtcm_server = false;
-    unsigned short rtcm_tcp_port = 2101;
-    unsigned short rtcm_station_id = 1234;
+std::string filename = "test.rtcm";
+bool flag_rtcm_tty_port = false;
+std::string rtcm_dump_devname = "/dev/pts/4";
+bool flag_rtcm_server = false;
+unsigned short rtcm_tcp_port = 2101;
+unsigned short rtcm_station_id = 1234;
 
-    std::unique_ptr<Rtcm_Printer> RTCM_printer(new Rtcm_Printer(filename, flag_rtcm_server, flag_rtcm_tty_port, rtcm_tcp_port, rtcm_station_id, rtcm_dump_devname));
+std::unique_ptr <Rtcm_Printer> RTCM_printer(
+        new Rtcm_Printer(filename, flag_rtcm_server, flag_rtcm_tty_port, rtcm_tcp_port, rtcm_station_id,
+                         rtcm_dump_devname));
 
-    std::string reference_msg = "D300133ED7D30202980EDEEF34B4BD62AC0941986F33360B98";
+std::string reference_msg = "D300133ED7D30202980EDEEF34B4BD62AC0941986F33360B98";
 
-    /* Convert the reference message to binary data */
-    std::string reference_msg_binary;
-    unsigned char c[1];
-    for(unsigned int i = 0; i < reference_msg.length(); i = i + 2)
-        {
-            unsigned long int n, n2;
-            std::istringstream(reference_msg.substr(i,1)) >> std::hex >> n;
-            std::istringstream(reference_msg.substr(i + 1, 1)) >> std::hex >> n2;
-            c[0] = static_cast<unsigned char>(n * 16) +  static_cast<unsigned char>(n2);
-            std::string ret(c, c+1);
-            reference_msg_binary += ret;
-        }
+/* Convert the reference message to binary data */
+std::string reference_msg_binary;
+unsigned char c[1];
+for(
+unsigned int i = 0;
+i<reference_msg.
 
-    std::string testing_msg = RTCM_printer->print_MT1005_test();
+length();
 
-    EXPECT_EQ(0, reference_msg_binary.compare(testing_msg));
+i = i + 2
+)
+{
+unsigned long int n, n2;
+std::istringstream(reference_msg
+.
+substr(i,
+1)) >> std::hex >>
+n;
+std::istringstream(reference_msg
+.
+substr(i
++ 1, 1)) >> std::hex >>
+n2;
+c[0] = static_cast
+<unsigned char>(n
+* 16) +  static_cast
+<unsigned char>(n2);
+std::string ret(c, c + 1);
+reference_msg_binary +=
+ret;
+}
+
+std::string testing_msg = RTCM_printer->print_MT1005_test();
+
+EXPECT_EQ(0, reference_msg_binary.
+compare(testing_msg)
+);
 }
 
 

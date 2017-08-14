@@ -53,84 +53,77 @@
 // ######## GNURADIO BLOCK MESSAGE RECEVER #########
 class GpsL2MDllPllTrackingTest_msg_rx;
 
-typedef boost::shared_ptr<GpsL2MDllPllTrackingTest_msg_rx> GpsL2MDllPllTrackingTest_msg_rx_sptr;
+typedef boost::shared_ptr <GpsL2MDllPllTrackingTest_msg_rx> GpsL2MDllPllTrackingTest_msg_rx_sptr;
 
 GpsL2MDllPllTrackingTest_msg_rx_sptr GpsL2MDllPllTrackingTest_msg_rx_make();
 
-class GpsL2MDllPllTrackingTest_msg_rx : public gr::block
-{
+class GpsL2MDllPllTrackingTest_msg_rx : public gr::block {
 private:
     friend GpsL2MDllPllTrackingTest_msg_rx_sptr GpsL2MDllPllTrackingTest_msg_rx_make();
+
     void msg_handler_events(pmt::pmt_t msg);
+
     GpsL2MDllPllTrackingTest_msg_rx();
 
 public:
     int rx_message;
+
     ~GpsL2MDllPllTrackingTest_msg_rx(); //!< Default destructor
 
 };
 
-GpsL2MDllPllTrackingTest_msg_rx_sptr GpsL2MDllPllTrackingTest_msg_rx_make()
-{
+GpsL2MDllPllTrackingTest_msg_rx_sptr GpsL2MDllPllTrackingTest_msg_rx_make() {
     return GpsL2MDllPllTrackingTest_msg_rx_sptr(new GpsL2MDllPllTrackingTest_msg_rx());
 }
 
-void GpsL2MDllPllTrackingTest_msg_rx::msg_handler_events(pmt::pmt_t msg)
-{
-    try
-    {
-            long int message = pmt::to_long(msg);
-            rx_message = message;
+void GpsL2MDllPllTrackingTest_msg_rx::msg_handler_events(pmt::pmt_t msg) {
+    try {
+        long int message = pmt::to_long(msg);
+        rx_message = message;
     }
-    catch(boost::bad_any_cast& e)
-    {
-            LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
-            rx_message = 0;
+    catch (boost::bad_any_cast &e) {
+        LOG(WARNING) << "msg_handler_telemetry Bad any cast!";
+        rx_message = 0;
     }
 }
 
 GpsL2MDllPllTrackingTest_msg_rx::GpsL2MDllPllTrackingTest_msg_rx() :
-            gr::block("GpsL2MDllPllTrackingTest_msg_rx", gr::io_signature::make(0, 0, 0), gr::io_signature::make(0, 0, 0))
-{
+        gr::block("GpsL2MDllPllTrackingTest_msg_rx", gr::io_signature::make(0, 0, 0), gr::io_signature::make(0, 0, 0)) {
     this->message_port_register_in(pmt::mp("events"));
-    this->set_msg_handler(pmt::mp("events"), boost::bind(&GpsL2MDllPllTrackingTest_msg_rx::msg_handler_events, this, _1));
+    this->set_msg_handler(pmt::mp("events"),
+                          boost::bind(&GpsL2MDllPllTrackingTest_msg_rx::msg_handler_events, this, _1));
     rx_message = 0;
 }
 
-GpsL2MDllPllTrackingTest_msg_rx::~GpsL2MDllPllTrackingTest_msg_rx()
-{}
+GpsL2MDllPllTrackingTest_msg_rx::~GpsL2MDllPllTrackingTest_msg_rx() {}
 
 
 // ###########################################################
 
 
-class GpsL2MDllPllTrackingTest: public ::testing::Test
-{
+class GpsL2MDllPllTrackingTest : public ::testing::Test {
 protected:
-    GpsL2MDllPllTrackingTest()
-    {
+    GpsL2MDllPllTrackingTest() {
         factory = std::make_shared<GNSSBlockFactory>();
         config = std::make_shared<InMemoryConfiguration>();
         item_size = sizeof(gr_complex);
         gnss_synchro = Gnss_Synchro();
     }
 
-    ~GpsL2MDllPllTrackingTest()
-    {}
+    ~GpsL2MDllPllTrackingTest() {}
 
     void init();
 
     gr::msg_queue::sptr queue;
     gr::top_block_sptr top_block;
-    std::shared_ptr<GNSSBlockFactory> factory;
-    std::shared_ptr<InMemoryConfiguration> config;
+    std::shared_ptr <GNSSBlockFactory> factory;
+    std::shared_ptr <InMemoryConfiguration> config;
     Gnss_Synchro gnss_synchro;
     size_t item_size;
 };
 
 
-void GpsL2MDllPllTrackingTest::init()
-{
+void GpsL2MDllPllTrackingTest::init() {
     gnss_synchro.Channel_ID = 0;
     gnss_synchro.System = 'G';
     std::string signal = "2S";
@@ -148,61 +141,103 @@ void GpsL2MDllPllTrackingTest::init()
     config->set_property("Tracking_2S.dll_bw_hz", "0.5");
 }
 
-TEST_F(GpsL2MDllPllTrackingTest, ValidationOfResults)
+TEST_F(GpsL2MDllPllTrackingTest, ValidationOfResults
+)
 {
-    struct timeval tv;
-    long long int begin = 0;
-    long long int end = 0;
-    int fs_in = 5000000;
-    int nsamples = fs_in*9;
+struct timeval tv;
+long long int begin = 0;
+long long int end = 0;
+int fs_in = 5000000;
+int nsamples = fs_in * 9;
 
-    init();
-    queue = gr::msg_queue::make(0);
-    top_block = gr::make_top_block("Tracking test");
-    std::shared_ptr<TrackingInterface> tracking = std::make_shared<GpsL2MDllPllTracking>(config.get(), "Tracking_2S", 1, 1);
-    boost::shared_ptr<GpsL2MDllPllTrackingTest_msg_rx> msg_rx = GpsL2MDllPllTrackingTest_msg_rx_make();
+init();
 
-    gnss_synchro.Acq_delay_samples = 1;
-    gnss_synchro.Acq_doppler_hz = 1200;
-    gnss_synchro.Acq_samplestamp_samples = 0;
+queue = gr::msg_queue::make(0);
+top_block = gr::make_top_block("Tracking test");
+std::shared_ptr <TrackingInterface> tracking = std::make_shared<GpsL2MDllPllTracking>(config.get(), "Tracking_2S", 1,
+                                                                                      1);
+boost::shared_ptr <GpsL2MDllPllTrackingTest_msg_rx> msg_rx = GpsL2MDllPllTrackingTest_msg_rx_make();
 
-    ASSERT_NO_THROW( {
-        tracking->set_channel(gnss_synchro.Channel_ID);
-    }) << "Failure setting channel." << std::endl;
+gnss_synchro.
+Acq_delay_samples = 1;
+gnss_synchro.
+Acq_doppler_hz = 1200;
+gnss_synchro.
+Acq_samplestamp_samples = 0;
 
-    ASSERT_NO_THROW( {
-        tracking->set_gnss_synchro(&gnss_synchro);
-    }) << "Failure setting gnss_synchro." << std::endl;
+ASSERT_NO_THROW( {
+tracking->
+set_channel(gnss_synchro
+.Channel_ID);
+}) << "Failure setting channel." <<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        tracking->connect(top_block);
-    }) << "Failure connecting tracking to the top_block." << std::endl;
+ASSERT_NO_THROW( {
+tracking->
+set_gnss_synchro(&gnss_synchro);
+}) << "Failure setting gnss_synchro." <<
+std::endl;
 
-    ASSERT_NO_THROW( {
-        //gr::analog::sig_source_c::sptr source = gr::analog::sig_source_c::make(fs_in, gr::analog::GR_SIN_WAVE, 1000, 1, gr_complex(0));
-        std::string path = std::string(TEST_PATH);
-        std::string file =  path + "signal_samples/gps_l2c_m_prn7_5msps.dat";
-        const char * file_name = file.c_str();
-        gr::blocks::file_source::sptr file_source = gr::blocks::file_source::make(sizeof(gr_complex), file_name, false);
-        boost::shared_ptr<gr::block> valve = gnss_sdr_make_valve(sizeof(gr_complex), nsamples, queue);
-        gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(Gnss_Synchro));
-        top_block->connect(file_source, 0, valve, 0);
-        top_block->connect(valve, 0, tracking->get_left_block(), 0);
-        top_block->connect(tracking->get_right_block(), 0, sink, 0);
-        top_block->msg_connect(tracking->get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events"));
-    }) << "Failure connecting the blocks of tracking test." << std::endl;
+ASSERT_NO_THROW( {
+tracking->
+connect(top_block);
+}) << "Failure connecting tracking to the top_block." <<
+std::endl;
 
-    tracking->start_tracking();
+ASSERT_NO_THROW( {
+//gr::analog::sig_source_c::sptr source = gr::analog::sig_source_c::make(fs_in, gr::analog::GR_SIN_WAVE, 1000, 1, gr_complex(0));
+std::string path = std::string(TEST_PATH);
+std::string file = path + "signal_samples/gps_l2c_m_prn7_5msps.dat";
+const char *file_name = file.c_str();
+gr::blocks::file_source::sptr file_source = gr::blocks::file_source::make(sizeof(gr_complex), file_name, false);
+boost::shared_ptr <gr::block> valve = gnss_sdr_make_valve(sizeof(gr_complex), nsamples, queue);
+gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(Gnss_Synchro));
+top_block->
+connect(file_source,
+0, valve, 0);
+top_block->
+connect(valve,
+0, tracking->
 
-    EXPECT_NO_THROW( {
-        gettimeofday(&tv, NULL);
-        begin = tv.tv_sec *1000000 + tv.tv_usec;
-        top_block->run(); // Start threads and wait
-        gettimeofday(&tv, NULL);
-        end = tv.tv_sec *1000000 + tv.tv_usec;
-    }) << "Failure running the top_block." << std::endl;
+get_left_block(),
 
-    // TODO: Verify tracking results
-    std::cout <<  "Tracked " << nsamples << " samples in " << (end - begin) << " microseconds" << std::endl;
+0);
+top_block->
+connect(tracking
+->
+
+get_right_block(),
+
+0, sink, 0);
+top_block->
+msg_connect(tracking
+->
+
+get_right_block(), pmt::mp("events"), msg_rx, pmt::mp("events")
+
+);
+}) << "Failure connecting the blocks of tracking test." <<
+std::endl;
+
+tracking->
+
+start_tracking();
+
+EXPECT_NO_THROW( {
+gettimeofday(&tv, NULL
+);
+begin = tv.tv_sec * 1000000 + tv.tv_usec;
+top_block->
+
+run(); // Start threads and wait
+gettimeofday(&tv, NULL
+);
+end = tv.tv_sec * 1000000 + tv.tv_usec;
+}) << "Failure running the top_block." <<
+std::endl;
+
+// TODO: Verify tracking results
+std::cout <<  "Tracked " << nsamples << " samples in " << (end - begin) << " microseconds" <<
+std::endl;
 }
 

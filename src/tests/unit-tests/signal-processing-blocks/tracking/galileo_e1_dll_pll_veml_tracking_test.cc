@@ -49,11 +49,9 @@
 #include "galileo_e1_dll_pll_veml_tracking.h"
 
 
-class GalileoE1DllPllVemlTrackingInternalTest: public ::testing::Test
-{
+class GalileoE1DllPllVemlTrackingInternalTest : public ::testing::Test {
 protected:
-    GalileoE1DllPllVemlTrackingInternalTest()
-    {
+    GalileoE1DllPllVemlTrackingInternalTest() {
         factory = std::make_shared<GNSSBlockFactory>();
         config = std::make_shared<InMemoryConfiguration>();
         item_size = sizeof(gr_complex);
@@ -62,8 +60,7 @@ protected:
         gnss_synchro = Gnss_Synchro();
     }
 
-    ~GalileoE1DllPllVemlTrackingInternalTest()
-    {}
+    ~GalileoE1DllPllVemlTrackingInternalTest() {}
 
     void init();
 
@@ -78,8 +75,7 @@ protected:
 };
 
 
-void GalileoE1DllPllVemlTrackingInternalTest::init()
-{
+void GalileoE1DllPllVemlTrackingInternalTest::init() {
     gnss_synchro.Channel_ID = 0;
     gnss_synchro.System = 'E';
     std::string signal = "1B";
@@ -98,9 +94,7 @@ void GalileoE1DllPllVemlTrackingInternalTest::init()
 }
 
 
-
-TEST_F(GalileoE1DllPllVemlTrackingInternalTest, Instantiate)
-{
+TEST_F(GalileoE1DllPllVemlTrackingInternalTest, Instantiate) {
 
     init();
     auto tracking = factory->GetBlock(config, "Tracking", "Galileo_E1_DLL_PLL_VEML_Tracking", 1, 1);
@@ -108,8 +102,7 @@ TEST_F(GalileoE1DllPllVemlTrackingInternalTest, Instantiate)
 }
 
 
-TEST_F(GalileoE1DllPllVemlTrackingInternalTest, ConnectAndRun)
-{
+TEST_F(GalileoE1DllPllVemlTrackingInternalTest, ConnectAndRun) {
     int fs_in = 8000000;
     int nsamples = 40000000;
     struct timeval tv;
@@ -120,45 +113,47 @@ TEST_F(GalileoE1DllPllVemlTrackingInternalTest, ConnectAndRun)
     top_block = gr::make_top_block("Tracking test");
 
     // Example using smart pointers and the block factory
-    std::shared_ptr<GNSSBlockInterface> trk_ = factory->GetBlock(config, "Tracking", "Galileo_E1_DLL_PLL_VEML_Tracking", 1, 1);
-    std::shared_ptr<GalileoE1DllPllVemlTracking> tracking = std::dynamic_pointer_cast<GalileoE1DllPllVemlTracking>(trk_);
+    std::shared_ptr<GNSSBlockInterface> trk_ = factory->GetBlock(config, "Tracking", "Galileo_E1_DLL_PLL_VEML_Tracking",
+                                                                 1, 1);
+    std::shared_ptr<GalileoE1DllPllVemlTracking> tracking = std::dynamic_pointer_cast<GalileoE1DllPllVemlTracking>(
+            trk_);
 
-    ASSERT_NO_THROW( {
-        tracking->set_channel(gnss_synchro.Channel_ID);
-    }) << "Failure setting channel." << std::endl;
+    ASSERT_NO_THROW({
+                        tracking->set_channel(gnss_synchro.Channel_ID);
+                    }) << "Failure setting channel." << std::endl;
 
-    ASSERT_NO_THROW( {
-        tracking->set_gnss_synchro(&gnss_synchro);
-    }) << "Failure setting gnss_synchro." << std::endl;
+    ASSERT_NO_THROW({
+                        tracking->set_gnss_synchro(&gnss_synchro);
+                    }) << "Failure setting gnss_synchro." << std::endl;
 
-    ASSERT_NO_THROW( {
-        tracking->connect(top_block);
-        gr::analog::sig_source_c::sptr source = gr::analog::sig_source_c::make(fs_in, gr::analog::GR_SIN_WAVE, 1000, 1, gr_complex(0));
-        boost::shared_ptr<gr::block> valve = gnss_sdr_make_valve(sizeof(gr_complex), nsamples, queue);
-        gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(Gnss_Synchro));
-        top_block->connect(source, 0, valve, 0);
-        top_block->connect(valve, 0, tracking->get_left_block(), 0);
-        top_block->connect(tracking->get_right_block(), 0, sink, 0);
+    ASSERT_NO_THROW({
+                        tracking->connect(top_block);
+                        gr::analog::sig_source_c::sptr source = gr::analog::sig_source_c::make(fs_in,
+                                                                                               gr::analog::GR_SIN_WAVE,
+                                                                                               1000, 1, gr_complex(0));
+                        boost::shared_ptr<gr::block> valve = gnss_sdr_make_valve(sizeof(gr_complex), nsamples, queue);
+                        gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(Gnss_Synchro));
+                        top_block->connect(source, 0, valve, 0);
+                        top_block->connect(valve, 0, tracking->get_left_block(), 0);
+                        top_block->connect(tracking->get_right_block(), 0, sink, 0);
 
-    }) << "Failure connecting the blocks of tracking test." << std::endl;
+                    }) << "Failure connecting the blocks of tracking test." << std::endl;
 
     tracking->start_tracking();
 
-    EXPECT_NO_THROW( {
-        gettimeofday(&tv, NULL);
-        begin = tv.tv_sec *1000000 + tv.tv_usec;
-        top_block->run();   //Start threads and wait
-        gettimeofday(&tv, NULL);
-        end = tv.tv_sec *1000000 + tv.tv_usec;
-    }) << "Failure running the top_block." << std::endl;
+    EXPECT_NO_THROW({
+                        gettimeofday(&tv, NULL);
+                        begin = tv.tv_sec * 1000000 + tv.tv_usec;
+                        top_block->run();   //Start threads and wait
+                        gettimeofday(&tv, NULL);
+                        end = tv.tv_sec * 1000000 + tv.tv_usec;
+                    }) << "Failure running the top_block." << std::endl;
 
-    std::cout <<  "Processed " << nsamples << " samples in " << (end - begin) << " microseconds" << std::endl;
+    std::cout << "Processed " << nsamples << " samples in " << (end - begin) << " microseconds" << std::endl;
 }
 
 
-
-TEST_F(GalileoE1DllPllVemlTrackingInternalTest, ValidationOfResults)
-{
+TEST_F(GalileoE1DllPllVemlTrackingInternalTest, ValidationOfResults) {
     struct timeval tv;
     long long int begin = 0;
     long long int end = 0;
@@ -171,7 +166,8 @@ TEST_F(GalileoE1DllPllVemlTrackingInternalTest, ValidationOfResults)
     top_block = gr::make_top_block("Tracking test");
 
     // Example using smart pointers and the block factory
-    std::shared_ptr<GNSSBlockInterface> trk_ = factory->GetBlock(config, "Tracking", "Galileo_E1_DLL_PLL_VEML_Tracking", 1, 1);
+    std::shared_ptr<GNSSBlockInterface> trk_ = factory->GetBlock(config, "Tracking", "Galileo_E1_DLL_PLL_VEML_Tracking",
+                                                                 1, 1);
     std::shared_ptr<TrackingInterface> tracking = std::dynamic_pointer_cast<TrackingInterface>(trk_);
 
     // gnss_synchro.Acq_delay_samples = 1753; // 4 Msps
@@ -180,41 +176,44 @@ TEST_F(GalileoE1DllPllVemlTrackingInternalTest, ValidationOfResults)
     gnss_synchro.Acq_doppler_hz = -8750; // 8 Msps
     gnss_synchro.Acq_samplestamp_samples = 0;
 
-    ASSERT_NO_THROW( {
-        tracking->set_channel(gnss_synchro.Channel_ID);
-    }) << "Failure setting channel." << std::endl;
+    ASSERT_NO_THROW({
+                        tracking->set_channel(gnss_synchro.Channel_ID);
+                    }) << "Failure setting channel." << std::endl;
 
-    ASSERT_NO_THROW( {
-        tracking->set_gnss_synchro(&gnss_synchro);
-    }) << "Failure setting gnss_synchro." << std::endl;
+    ASSERT_NO_THROW({
+                        tracking->set_gnss_synchro(&gnss_synchro);
+                    }) << "Failure setting gnss_synchro." << std::endl;
 
-    ASSERT_NO_THROW( {
-        tracking->connect(top_block);
-    }) << "Failure connecting tracking to the top_block." << std::endl;
+    ASSERT_NO_THROW({
+                        tracking->connect(top_block);
+                    }) << "Failure connecting tracking to the top_block." << std::endl;
 
-    ASSERT_NO_THROW( {
-        std::string path = std::string(TEST_PATH);
-        std::string file = path + "signal_samples/GSoC_CTTC_capture_2012_07_26_4Msps_4ms.dat";
-        const char * file_name = file.c_str();
-        gr::blocks::file_source::sptr file_source = gr::blocks::file_source::make(sizeof(gr_complex),file_name,false);
-        gr::blocks::skiphead::sptr skip_head = gr::blocks::skiphead::make(sizeof(gr_complex), skiphead_sps);
-        boost::shared_ptr<gr::block> valve = gnss_sdr_make_valve(sizeof(gr_complex), num_samples, queue);
-        gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(Gnss_Synchro));
-        top_block->connect(file_source, 0, skip_head, 0);
-        top_block->connect(skip_head, 0, valve, 0);
-        top_block->connect(valve, 0, tracking->get_left_block(), 0);
-        top_block->connect(tracking->get_right_block(), 0, sink, 0);
-    }) << "Failure connecting the blocks of tracking test." << std::endl;
+    ASSERT_NO_THROW({
+                        std::string path = std::string(TEST_PATH);
+                        std::string file = path + "signal_samples/GSoC_CTTC_capture_2012_07_26_4Msps_4ms.dat";
+                        const char *file_name = file.c_str();
+                        gr::blocks::file_source::sptr file_source = gr::blocks::file_source::make(sizeof(gr_complex),
+                                                                                                  file_name, false);
+                        gr::blocks::skiphead::sptr skip_head = gr::blocks::skiphead::make(sizeof(gr_complex),
+                                                                                          skiphead_sps);
+                        boost::shared_ptr<gr::block> valve = gnss_sdr_make_valve(sizeof(gr_complex), num_samples,
+                                                                                 queue);
+                        gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(Gnss_Synchro));
+                        top_block->connect(file_source, 0, skip_head, 0);
+                        top_block->connect(skip_head, 0, valve, 0);
+                        top_block->connect(valve, 0, tracking->get_left_block(), 0);
+                        top_block->connect(tracking->get_right_block(), 0, sink, 0);
+                    }) << "Failure connecting the blocks of tracking test." << std::endl;
 
     tracking->start_tracking();
 
-    EXPECT_NO_THROW( {
-        gettimeofday(&tv, NULL);
-        begin = tv.tv_sec *1000000 + tv.tv_usec;
-        top_block->run(); // Start threads and wait
-        gettimeofday(&tv, NULL);
-        end = tv.tv_sec *1000000 + tv.tv_usec;
-    }) << "Failure running the top_block." << std::endl;
+    EXPECT_NO_THROW({
+                        gettimeofday(&tv, NULL);
+                        begin = tv.tv_sec * 1000000 + tv.tv_usec;
+                        top_block->run(); // Start threads and wait
+                        gettimeofday(&tv, NULL);
+                        end = tv.tv_sec * 1000000 + tv.tv_usec;
+                    }) << "Failure running the top_block." << std::endl;
 
-    std::cout <<  "Tracked " << num_samples << " samples in " << (end - begin) << " microseconds" << std::endl;
+    std::cout << "Tracked " << num_samples << " samples in " << (end - begin) << " microseconds" << std::endl;
 }
