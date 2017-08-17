@@ -47,14 +47,14 @@ class ConfigurationInterface;
 /*!
  * \brief This class implements a code DLL + carrier PLL tracking loop
  */
-class BeiDouB1iDllPllTracking : public TrackingInterface {
+class BeiDouB1IDllPllTracking : public TrackingInterface {
 public:
-    BeiDouB1iDllPllTracking(ConfigurationInterface *configuration,
+    BeiDouB1IDllPllTracking(ConfigurationInterface *configuration,
                             std::string role,
                             unsigned int in_streams,
                             unsigned int out_streams);
 
-    virtual ~BeiDouB1iDllPllTracking();
+    virtual ~BeiDouB1IDllPllTracking();
 
     std::string role() {
         return role_;

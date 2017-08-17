@@ -84,6 +84,7 @@ public:
      * Signal Source > Signal conditioner > Channels >> Observables >> PVT > Output filter
      */
     void connect();
+    void connect_beidou_test();
 
     void wait();
 
@@ -118,6 +119,7 @@ public:
 
 private:
     void init(); // Populates the SV PRN list available for acquisition and tracking
+    void beidou_init();
     void set_signals_list();
 
     void set_channels_state(); // Initializes the channels state (start acquisition or keep standby)

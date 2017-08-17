@@ -39,7 +39,7 @@
 
 using google::LogMessage;
 
-BeidouB1iPcpsAcquisition::BeidouB1iPcpsAcquisition(
+BeiDouB1IPcpsAcquisition::BeiDouB1IPcpsAcquisition(
         ConfigurationInterface *configuration, std::string role,
         unsigned int in_streams, unsigned int out_streams) :
         role_(role), in_streams_(in_streams), out_streams_(out_streams) {
@@ -107,12 +107,12 @@ BeidouB1iPcpsAcquisition::BeidouB1iPcpsAcquisition(
 }
 
 
-BeidouB1iPcpsAcquisition::~BeidouB1iPcpsAcquisition() {
+BeiDouB1IPcpsAcquisition::~BeiDouB1IPcpsAcquisition() {
     delete[] code_;
 }
 
 
-void BeidouB1iPcpsAcquisition::set_channel(unsigned int channel) {
+void BeiDouB1IPcpsAcquisition::set_channel(unsigned int channel) {
     channel_ = channel;
     if (item_type_.compare("cshort") == 0) {
         acquisition_sc_->set_channel(channel_);
@@ -122,7 +122,7 @@ void BeidouB1iPcpsAcquisition::set_channel(unsigned int channel) {
 }
 
 
-void BeidouB1iPcpsAcquisition::set_threshold(float threshold) {
+void BeiDouB1IPcpsAcquisition::set_threshold(float threshold) {
     float pfa = configuration_->property(role_ + ".pfa", 0.0);
 
     if (pfa == 0.0) {
@@ -142,7 +142,7 @@ void BeidouB1iPcpsAcquisition::set_threshold(float threshold) {
 }
 
 
-void BeidouB1iPcpsAcquisition::set_doppler_max(unsigned int doppler_max) {
+void BeiDouB1IPcpsAcquisition::set_doppler_max(unsigned int doppler_max) {
     doppler_max_ = doppler_max;
 
     if (item_type_.compare("cshort") == 0) {
@@ -153,7 +153,7 @@ void BeidouB1iPcpsAcquisition::set_doppler_max(unsigned int doppler_max) {
 }
 
 
-void BeidouB1iPcpsAcquisition::set_doppler_step(unsigned int doppler_step) {
+void BeiDouB1IPcpsAcquisition::set_doppler_step(unsigned int doppler_step) {
     doppler_step_ = doppler_step;
 
     if (item_type_.compare("cshort") == 0) {
@@ -164,7 +164,7 @@ void BeidouB1iPcpsAcquisition::set_doppler_step(unsigned int doppler_step) {
 }
 
 
-void BeidouB1iPcpsAcquisition::set_gnss_synchro(Gnss_Synchro *gnss_synchro) {
+void BeiDouB1IPcpsAcquisition::set_gnss_synchro(Gnss_Synchro *gnss_synchro) {
     gnss_synchro_ = gnss_synchro;
 
     if (item_type_.compare("cshort") == 0) {
@@ -175,7 +175,7 @@ void BeidouB1iPcpsAcquisition::set_gnss_synchro(Gnss_Synchro *gnss_synchro) {
 }
 
 
-signed int BeidouB1iPcpsAcquisition::mag() {
+signed int BeiDouB1IPcpsAcquisition::mag() {
     if (item_type_.compare("cshort") == 0) {
         return acquisition_sc_->mag();
     } else {
@@ -183,7 +183,7 @@ signed int BeidouB1iPcpsAcquisition::mag() {
     }
 }
 
-void BeidouB1iPcpsAcquisition::init() {
+void BeiDouB1IPcpsAcquisition::init() {
     if (item_type_.compare("cshort") == 0) {
         acquisition_sc_->init();
     } else {
@@ -193,7 +193,7 @@ void BeidouB1iPcpsAcquisition::init() {
     set_local_code();
 }
 
-void BeidouB1iPcpsAcquisition::set_local_code() {
+void BeiDouB1IPcpsAcquisition::set_local_code() {
 
     std::complex<float> *code = new std::complex<float>[code_length_];
 
@@ -214,7 +214,7 @@ void BeidouB1iPcpsAcquisition::set_local_code() {
 }
 
 
-void BeidouB1iPcpsAcquisition::reset() {
+void BeiDouB1IPcpsAcquisition::reset() {
     if (item_type_.compare("cshort") == 0) {
         acquisition_sc_->set_active(true);
     } else {
@@ -222,7 +222,7 @@ void BeidouB1iPcpsAcquisition::reset() {
     }
 }
 
-void BeidouB1iPcpsAcquisition::set_state(int state) {
+void BeiDouB1IPcpsAcquisition::set_state(int state) {
     if (item_type_.compare("cshort") == 0) {
         acquisition_sc_->set_state(state);
     } else {
@@ -230,7 +230,7 @@ void BeidouB1iPcpsAcquisition::set_state(int state) {
     }
 }
 
-float BeidouB1iPcpsAcquisition::calculate_threshold(float pfa) {
+float BeiDouB1IPcpsAcquisition::calculate_threshold(float pfa) {
     //Calculate the threshold
     unsigned int frequency_bins = 0;
     for (int doppler = (int) (-doppler_max_); doppler <= (int) doppler_max_; doppler += doppler_step_) {
@@ -248,7 +248,7 @@ float BeidouB1iPcpsAcquisition::calculate_threshold(float pfa) {
 }
 
 
-void BeidouB1iPcpsAcquisition::connect(gr::top_block_sptr top_block) {
+void BeiDouB1IPcpsAcquisition::connect(gr::top_block_sptr top_block) {
     if (item_type_.compare("gr_complex") == 0) {
         top_block->connect(stream_to_vector_, 0, acquisition_cc_, 0);
     } else if (item_type_.compare("cshort") == 0) {
@@ -263,7 +263,7 @@ void BeidouB1iPcpsAcquisition::connect(gr::top_block_sptr top_block) {
     }
 }
 
-void BeidouB1iPcpsAcquisition::disconnect(gr::top_block_sptr top_block) {
+void BeiDouB1IPcpsAcquisition::disconnect(gr::top_block_sptr top_block) {
     if (item_type_.compare("gr_complex") == 0) {
         top_block->disconnect(stream_to_vector_, 0, acquisition_cc_, 0);
     } else if (item_type_.compare("cshort") == 0) {
@@ -280,7 +280,7 @@ void BeidouB1iPcpsAcquisition::disconnect(gr::top_block_sptr top_block) {
     }
 }
 
-gr::basic_block_sptr BeidouB1iPcpsAcquisition::get_left_block() {
+gr::basic_block_sptr BeiDouB1IPcpsAcquisition::get_left_block() {
     if (item_type_.compare("gr_complex") == 0) {
         return stream_to_vector_;
     } else if (item_type_.compare("cshort") == 0) {
@@ -293,7 +293,7 @@ gr::basic_block_sptr BeidouB1iPcpsAcquisition::get_left_block() {
     }
 }
 
-gr::basic_block_sptr BeidouB1iPcpsAcquisition::get_right_block() {
+gr::basic_block_sptr BeiDouB1IPcpsAcquisition::get_right_block() {
     if (item_type_.compare("cshort") == 0) {
         return acquisition_sc_;
     } else {

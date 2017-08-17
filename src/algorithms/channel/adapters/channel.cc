@@ -57,7 +57,7 @@ Channel::Channel(ConfigurationInterface *configuration, unsigned int channel,
 
     acq_->set_channel(channel_);
     trk_->set_channel(channel_);
-    nav_->set_channel(channel_);
+    //nav_->set_channel(channel_);
 
     gnss_synchro_.Channel_ID = channel_;
     acq_->set_gnss_synchro(&gnss_synchro_);
@@ -111,22 +111,22 @@ void Channel::connect(gr::top_block_sptr top_block) {
     pass_through_->connect(top_block);
     acq_->connect(top_block);
     trk_->connect(top_block);
-    nav_->connect(top_block);
+    //nav_->connect(top_block);
 
     //Synchronous ports
     top_block->connect(pass_through_->get_right_block(), 0, acq_->get_left_block(), 0);
     DLOG(INFO) << "pass_through_ -> acquisition";
     top_block->connect(pass_through_->get_right_block(), 0, trk_->get_left_block(), 0);
     DLOG(INFO) << "pass_through_ -> tracking";
-    top_block->connect(trk_->get_right_block(), 0, nav_->get_left_block(), 0);
-    DLOG(INFO) << "tracking -> telemetry_decoder";
+    //top_block->connect(trk_->get_right_block(), 0, nav_->get_left_block(), 0);
+    //DLOG(INFO) << "tracking -> telemetry_decoder";
 
+/*
     // Message ports
     top_block->msg_connect(nav_->get_left_block(), pmt::mp("preamble_timestamp_s"), trk_->get_right_block(),
                            pmt::mp("preamble_timestamp_s"));
     DLOG(INFO) << "MSG FEEDBACK CHANNEL telemetry_decoder -> tracking";
-
-    //std::cout<<"has port: "<<trk_->get_right_block()->has_msg_port(pmt::mp("events"))<<std::endl;
+*/
     top_block->msg_connect(acq_->get_right_block(), pmt::mp("events"), channel_msg_rx, pmt::mp("events"));
     top_block->msg_connect(trk_->get_right_block(), pmt::mp("events"), channel_msg_rx, pmt::mp("events"));
 
@@ -141,11 +141,11 @@ void Channel::disconnect(gr::top_block_sptr top_block) {
     }
     top_block->disconnect(pass_through_->get_right_block(), 0, acq_->get_left_block(), 0);
     top_block->disconnect(pass_through_->get_right_block(), 0, trk_->get_left_block(), 0);
-    top_block->disconnect(trk_->get_right_block(), 0, nav_->get_left_block(), 0);
+    //top_block->disconnect(trk_->get_right_block(), 0, nav_->get_left_block(), 0);
     pass_through_->disconnect(top_block);
     acq_->disconnect(top_block);
     trk_->disconnect(top_block);
-    nav_->disconnect(top_block);
+    //nav_->disconnect(top_block);
     connected_ = false;
 }
 
@@ -169,7 +169,7 @@ void Channel::set_signal(const Gnss_Signal &gnss_signal) {
     gnss_synchro_.PRN = gnss_signal_.get_satellite().get_PRN();
     gnss_synchro_.System = gnss_signal_.get_satellite().get_system_short().c_str()[0];
     acq_->set_local_code();
-    nav_->set_satellite(gnss_signal_.get_satellite());
+    //nav_->set_satellite(gnss_signal_.get_satellite());
 }
 
 

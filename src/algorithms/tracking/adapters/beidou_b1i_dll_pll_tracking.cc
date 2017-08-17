@@ -43,7 +43,7 @@
 
 using google::LogMessage;
 
-BeiDouB1iDllPllTracking::BeiDouB1iDllPllTracking(ConfigurationInterface *configuration,
+BeiDouB1IDllPllTracking::BeiDouB1IDllPllTracking(ConfigurationInterface *configuration,
                                                  std::string role,
                                                  unsigned int in_streams,
                                                  unsigned int out_streams) :
@@ -93,10 +93,10 @@ BeiDouB1iDllPllTracking::BeiDouB1iDllPllTracking(ConfigurationInterface *configu
 }
 
 
-BeiDouB1iDllPllTracking::~BeiDouB1iDllPllTracking() {}
+BeiDouB1IDllPllTracking::~BeiDouB1IDllPllTracking() {}
 
 
-void BeiDouB1iDllPllTracking::start_tracking() {
+void BeiDouB1IDllPllTracking::start_tracking() {
     tracking_->start_tracking();
 }
 
@@ -104,35 +104,35 @@ void BeiDouB1iDllPllTracking::start_tracking() {
 /*
  * Set tracking channel unique ID
  */
-void BeiDouB1iDllPllTracking::set_channel(unsigned int channel) {
+void BeiDouB1IDllPllTracking::set_channel(unsigned int channel) {
     channel_ = channel;
     tracking_->set_channel(channel);
 }
 
 
-void BeiDouB1iDllPllTracking::set_gnss_synchro(Gnss_Synchro *p_gnss_synchro) {
+void BeiDouB1IDllPllTracking::set_gnss_synchro(Gnss_Synchro *p_gnss_synchro) {
     tracking_->set_gnss_synchro(p_gnss_synchro);
 }
 
 
-void BeiDouB1iDllPllTracking::connect(gr::top_block_sptr top_block) {
+void BeiDouB1IDllPllTracking::connect(gr::top_block_sptr top_block) {
     if (top_block) { /* top_block is not null */};
     //nothing to connect, now the tracking uses gr_sync_decimator
 }
 
 
-void BeiDouB1iDllPllTracking::disconnect(gr::top_block_sptr top_block) {
+void BeiDouB1IDllPllTracking::disconnect(gr::top_block_sptr top_block) {
     if (top_block) { /* top_block is not null */};
     //nothing to disconnect, now the tracking uses gr_sync_decimator
 }
 
 
-gr::basic_block_sptr BeiDouB1iDllPllTracking::get_left_block() {
+gr::basic_block_sptr BeiDouB1IDllPllTracking::get_left_block() {
     return tracking_;
 }
 
 
-gr::basic_block_sptr BeiDouB1iDllPllTracking::get_right_block() {
+gr::basic_block_sptr BeiDouB1IDllPllTracking::get_right_block() {
     return tracking_;
 }
 

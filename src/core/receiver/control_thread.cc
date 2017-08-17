@@ -102,7 +102,9 @@ ControlThread::~ControlThread() {
  */
 void ControlThread::run() {
     // Connect the flowgraph
-    flowgraph_->connect();
+    //flowgraph_->connect();
+    flowgraph_->connect_beidou_test();
+
     if (flowgraph_->connected()) {
         LOG(INFO) << "Flowgraph connected";
     } else {
