@@ -39,6 +39,23 @@
 #include "configuration_interface.h"
 //#include "channel_msg_receiver_cc.h"
 
+
+#include <ctime>
+#include <iostream>
+#include <gnuradio/top_block.h>
+#include <gnuradio/blocks/file_source.h>
+#include <gnuradio/analog/sig_source_waveform.h>
+#include <gnuradio/analog/sig_source_c.h>
+#include <gnuradio/msg_queue.h>
+#include <gnuradio/blocks/null_sink.h>
+#include <gnuradio/blocks/skiphead.h>
+#include <gtest/gtest.h>
+#include "gnss_block_factory.h"
+#include "gnss_block_interface.h"
+#include "tracking_interface.h"
+#include "in_memory_configuration.h"
+#include "gnss_synchro.h"
+
 using google::LogMessage;
 
 // Constructor
@@ -120,7 +137,8 @@ void Channel::connect(gr::top_block_sptr top_block) {
     DLOG(INFO) << "pass_through_ -> tracking";
     //top_block->connect(trk_->get_right_block(), 0, nav_->get_left_block(), 0);
     //DLOG(INFO) << "tracking -> telemetry_decoder";
-
+    gr::blocks::null_sink::sptr sink = gr::blocks::null_sink::make(sizeof(Gnss_Synchro));
+    top_block->connect(trk_->get_right_block(), 0, sink, 0);
 /*
     // Message ports
     top_block->msg_connect(nav_->get_left_block(), pmt::mp("preamble_timestamp_s"), trk_->get_right_block(),

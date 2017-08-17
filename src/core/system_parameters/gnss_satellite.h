@@ -51,7 +51,7 @@ public:
     ~Gnss_Satellite();                         //!< Default Destructor.
     unsigned int get_PRN() const;              //!< Gets satellite's PRN
     std::string
-    get_system() const;            //!< Gets the satellite system {"GPS", "GLONASS", "SBAS", "Galileo", "Beidou"}
+    get_system() const;            //!< Gets the satellite system {"GPS", "GLONASS", "SBAS", "Galileo", "BeiDou"}
     std::string get_system_short() const;      //!< Gets the satellite system {"G", "R", "SBAS", "E", "C"}
     std::string
     get_block() const;             //!< Gets the satellite block. If GPS, returns {"IIA", "IIR", "IIR-M", "IIF"}
@@ -67,7 +67,7 @@ private:
     signed int rf_link;
 
     void set_system(
-            const std::string &system);  // Sets the satellite system {"GPS", "GLONASS", "SBAS", "Galileo", "Beidou"}.
+            const std::string &system);  // Sets the satellite system {"GPS", "GLONASS", "SBAS", "Galileo", "BeiDou"}.
     void set_PRN(unsigned int PRN);       // Sets satellite's PRN
     void set_block(const std::string &system_, unsigned int PRN_);
 

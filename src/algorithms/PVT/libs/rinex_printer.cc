@@ -69,7 +69,7 @@ Rinex_Printer::Rinex_Printer(int conf_version) {
     satelliteSystem["GLONASS"] = "R";
     satelliteSystem["SBAS payload"] = "S";
     satelliteSystem["Galileo"] = "E";
-    satelliteSystem["Beidou"] = "C";
+    satelliteSystem["BeiDou"] = "C";
     satelliteSystem["Mixed"] = "M";
 
     observationCode["GPS_L1_CA"] = "1C";              // "1C" GPS L1 C/A

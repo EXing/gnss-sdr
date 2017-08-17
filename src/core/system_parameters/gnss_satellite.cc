@@ -49,12 +49,12 @@ Gnss_Satellite::~Gnss_Satellite() {}
 
 
 void Gnss_Satellite::reset() {
-    system_set = {"GPS", "GLONASS", "SBAS", "Galileo", "Beidou"};
+    system_set = {"GPS", "GLONASS", "SBAS", "Galileo", "BeiDou"};
     satelliteSystem["GPS"] = "G";
     satelliteSystem["GLONASS"] = "R";
     satelliteSystem["SBAS"] = "S";
     satelliteSystem["Galileo"] = "E";
-    satelliteSystem["Beidou"] = "C";
+    satelliteSystem["BeiDou"] = "C";
     PRN = 0;
     system = std::string("");
     block = std::string("");
@@ -103,13 +103,13 @@ Gnss_Satellite& Gnss_Satellite::operator=(const Gnss_Satellite &rhs) {
 
 
 void Gnss_Satellite::set_system(const std::string &system_) {
-    // Set the satellite system {"GPS", "GLONASS", "SBAS", "Galileo", "Beidou"}
+    // Set the satellite system {"GPS", "GLONASS", "SBAS", "Galileo", "BeiDou"}
     std::set<std::string>::iterator it = system_set.find(system_);
 
     if (it != system_set.end()) {
         system = system_;
     } else {
-        DLOG(INFO) << "System " << system_ << " is not defined {GPS, GLONASS, SBAS, Galileo, Beidou}. Initialization?";
+        DLOG(INFO) << "System " << system_ << " is not defined {GPS, GLONASS, SBAS, Galileo, BeiDou}. Initialization?";
         system = std::string("");
     }
 }
@@ -129,7 +129,7 @@ void Gnss_Satellite::set_PRN(unsigned int PRN_) {
             PRN = PRN_;
         }
     }
-    if (system.compare("Beidou") == 0) {
+    if (system.compare("BeiDou") == 0) {
         if (PRN_ < 1 or PRN_ > 37) {
             DLOG(INFO) << "This PRN is not defined";
             PRN = 0;
@@ -178,7 +178,7 @@ unsigned int Gnss_Satellite::get_PRN() const {
 
 
 std::string Gnss_Satellite::get_system() const {
-    // Get the satellite system {"GPS", "GLONASS", "SBAS", "Galileo", "Beidou"}
+    // Get the satellite system {"GPS", "GLONASS", "SBAS", "Galileo", "BeiDou"}
     std::string system_;
     system_ = system;
     return system_;

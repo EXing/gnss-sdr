@@ -45,9 +45,9 @@
 #include "tracking_2nd_PLL_filter.h"
 #include "cpu_multicorrelator.h"
 
-class BeiDou_B1i_Dll_Pll_Tracking_cc;
+class BeiDou_B1I_Dll_Pll_Tracking_cc;
 
-typedef boost::shared_ptr<BeiDou_B1i_Dll_Pll_Tracking_cc>
+typedef boost::shared_ptr<BeiDou_B1I_Dll_Pll_Tracking_cc>
         beidou_b1i_dll_pll_tracking_cc_sptr;
 
 beidou_b1i_dll_pll_tracking_cc_sptr
@@ -64,9 +64,9 @@ beidou_b1i_dll_pll_make_tracking_cc(long if_freq,
 /*!
  * \brief This class implements a DLL + PLL tracking loop block
  */
-class BeiDou_B1i_Dll_Pll_Tracking_cc : public gr::block {
+class BeiDou_B1I_Dll_Pll_Tracking_cc : public gr::block {
 public:
-    ~BeiDou_B1i_Dll_Pll_Tracking_cc();
+    ~BeiDou_B1I_Dll_Pll_Tracking_cc();
 
     void set_channel(unsigned int channel);
 
@@ -92,7 +92,7 @@ private:
                                         float dll_bw_hz,
                                         float early_late_space_chips);
 
-    BeiDou_B1i_Dll_Pll_Tracking_cc(long if_freq,
+    BeiDou_B1I_Dll_Pll_Tracking_cc(long if_freq,
                                    long fs_in, unsigned
                                    int vector_length,
                                    bool dump,

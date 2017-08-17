@@ -70,7 +70,7 @@ beidou_b1i_dll_pll_make_tracking_cc(long if_freq,
                                     float dll_bw_hz,
                                     float early_late_space_chips) {
     return beidou_b1i_dll_pll_tracking_cc_sptr(
-            new BeiDou_B1i_Dll_Pll_Tracking_cc(if_freq,
+            new BeiDou_B1I_Dll_Pll_Tracking_cc(if_freq,
                                                fs_in,
                                                vector_length,
                                                dump,
@@ -81,7 +81,7 @@ beidou_b1i_dll_pll_make_tracking_cc(long if_freq,
 }
 
 
-void BeiDou_B1i_Dll_Pll_Tracking_cc::forecast(int noutput_items,
+void BeiDou_B1I_Dll_Pll_Tracking_cc::forecast(int noutput_items,
                                               gr_vector_int &ninput_items_required) {
     if (noutput_items != 0) {
         ninput_items_required[0] =
@@ -90,7 +90,7 @@ void BeiDou_B1i_Dll_Pll_Tracking_cc::forecast(int noutput_items,
 }
 
 
-BeiDou_B1i_Dll_Pll_Tracking_cc::BeiDou_B1i_Dll_Pll_Tracking_cc(
+BeiDou_B1I_Dll_Pll_Tracking_cc::BeiDou_B1I_Dll_Pll_Tracking_cc(
         long if_freq,
         long fs_in,
         unsigned int vector_length,
@@ -99,7 +99,7 @@ BeiDou_B1i_Dll_Pll_Tracking_cc::BeiDou_B1i_Dll_Pll_Tracking_cc(
         float pll_bw_hz,
         float dll_bw_hz,
         float early_late_space_chips) :
-        gr::block("BeiDou_B1i_Dll_Pll_Tracking_cc",
+        gr::block("BeiDou_B1I_Dll_Pll_Tracking_cc",
                   gr::io_signature::make(1, 1, sizeof(gr_complex)),
                   gr::io_signature::make(1, 1, sizeof(Gnss_Synchro))) {
     // Telemetry bit synchronization message port input
@@ -174,7 +174,7 @@ BeiDou_B1i_Dll_Pll_Tracking_cc::BeiDou_B1i_Dll_Pll_Tracking_cc(
     d_carrier_lock_fail_counter = 0;
     d_carrier_lock_threshold = CARRIER_LOCK_THRESHOLD;
 
-    systemName["C"] = std::string("Beidou");
+    systemName["C"] = std::string("BeiDou");
     systemName["S"] = std::string("SBAS");
 
     d_acquisition_gnss_synchro = 0;
@@ -192,7 +192,7 @@ BeiDou_B1i_Dll_Pll_Tracking_cc::BeiDou_B1i_Dll_Pll_Tracking_cc(
 }
 
 
-void BeiDou_B1i_Dll_Pll_Tracking_cc::start_tracking() {
+void BeiDou_B1I_Dll_Pll_Tracking_cc::start_tracking() {
     /*
      *  correct the code phase according to the delay between acq and trk
      */
@@ -287,7 +287,7 @@ void BeiDou_B1i_Dll_Pll_Tracking_cc::start_tracking() {
               << " PULL-IN Code Phase [samples]=" << d_acq_code_phase_samples;
 }
 
-BeiDou_B1i_Dll_Pll_Tracking_cc::~BeiDou_B1i_Dll_Pll_Tracking_cc() {
+BeiDou_B1I_Dll_Pll_Tracking_cc::~BeiDou_B1I_Dll_Pll_Tracking_cc() {
     d_dump_file.close();
 
     volk_gnsssdr_free(d_local_code_shift_chips);
@@ -299,7 +299,7 @@ BeiDou_B1i_Dll_Pll_Tracking_cc::~BeiDou_B1i_Dll_Pll_Tracking_cc() {
 }
 
 
-int BeiDou_B1i_Dll_Pll_Tracking_cc::general_work(int noutput_items __attribute__((unused)),
+int BeiDou_B1I_Dll_Pll_Tracking_cc::general_work(int noutput_items __attribute__((unused)),
                                                  gr_vector_int &ninput_items __attribute__((unused)),
                                                  gr_vector_const_void_star &input_items,
                                                  gr_vector_void_star &output_items) {
@@ -525,7 +525,7 @@ int BeiDou_B1i_Dll_Pll_Tracking_cc::general_work(int noutput_items __attribute__
 }
 
 
-void BeiDou_B1i_Dll_Pll_Tracking_cc::set_channel(unsigned int channel) {
+void BeiDou_B1I_Dll_Pll_Tracking_cc::set_channel(unsigned int channel) {
     d_channel = channel;
     LOG(INFO) << "Tracking Channel set to " << d_channel;
     // ############# ENABLE DATA FILE LOG #################
@@ -547,6 +547,6 @@ void BeiDou_B1i_Dll_Pll_Tracking_cc::set_channel(unsigned int channel) {
 }
 
 
-void BeiDou_B1i_Dll_Pll_Tracking_cc::set_gnss_synchro(Gnss_Synchro *p_gnss_synchro) {
+void BeiDou_B1I_Dll_Pll_Tracking_cc::set_gnss_synchro(Gnss_Synchro *p_gnss_synchro) {
     d_acquisition_gnss_synchro = p_gnss_synchro;
 }
