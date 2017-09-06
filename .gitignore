@@ -1,5 +1,6 @@
 *~
 .*.swp
+.idea/workspace.xml
 docs/doxygen/Doxyfile
 docs/html
 docs/latex
