@@ -479,9 +479,7 @@ void GNSSFlowgraph::apply_action(unsigned int who, unsigned int what) {
             LOG(INFO) << "Channel " << who << " ACQ FAILED satellite "
                       << channels_.at(who)->get_signal().get_satellite() << ", Signal "
                       << channels_.at(who)->get_signal().get_signal_str();
-        std::cout << "Channel " << who << " ACQ FAILED satellite "
-                      << channels_.at(who)->get_signal().get_satellite() << ", Signal "
-                      << channels_.at(who)->get_signal().get_signal_str()<<std::endl;
+
             available_GNSS_signals_.push_back(channels_.at(who)->get_signal());
             //TODO: Optimize the channel and signal matching!
             while (channels_.at(who)->get_signal().get_signal_str().compare(
@@ -497,8 +495,7 @@ void GNSSFlowgraph::apply_action(unsigned int who, unsigned int what) {
         case 1:
             LOG(INFO) << "Channel " << who << " ACQ SUCCESS satellite "
                       << channels_.at(who)->get_signal().get_satellite();
-        std::cout << "Channel " << who << " ACQ SUCCESS satellite "
-                      << channels_.at(who)->get_signal().get_satellite()<<std::endl;
+
             channels_state_[who] = 2;
             acq_channels_count_--;
             if (!available_GNSS_signals_.empty() && acq_channels_count_ < max_acq_channels_) {
@@ -525,8 +522,7 @@ void GNSSFlowgraph::apply_action(unsigned int who, unsigned int what) {
         case 2:
             LOG(INFO) << "Channel " << who << " TRK FAILED satellite "
                       << channels_.at(who)->get_signal().get_satellite();
-        std::cout << "Channel " << who << " TRK FAILED satellite "
-                      << channels_.at(who)->get_signal().get_satellite()<<std::endl;
+
             if (acq_channels_count_ < max_acq_channels_) {
                 channels_state_[who] = 1;
                 acq_channels_count_++;
