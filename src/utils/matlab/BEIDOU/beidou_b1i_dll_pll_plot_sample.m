@@ -30,11 +30,11 @@
 close all;
 clear all;
 % samplingFreq       =  64e6/32;     %[Hz]
-channels=1;
+channels=4;
 
-addpath('/Users/enricjuan/code_repos/gnss-sdr/src/utils/matlab/libs/');
+addpath('/home/qinxin/CLionProjects/gnss-sdr/src/utils/matlab/libs/');
 
-path='/Users/enricjuan/code_repos/gnss-sdr/src/tests/data/tracking_beidou/';
+path='/home/qinxin/CLionProjects/gnss-sdr/tracking_datab/';
 
 clear PRN_absolute_sample_start;
 for N=1:1:channels
@@ -71,24 +71,25 @@ for N=1:1:channels
 end
 
 for N=1:1:channels
-%  figure;
-%  plot([GNSS_tracking(N).E,GNSS_tracking(N).P,GNSS_tracking(N).L],'-*');
-%  title(['Early, Prompt, and Late correlator absolute value output for channel ' num2str(N)']);
-%  figure;
-%  plot(GNSS_tracking(N).prompt_I,GNSS_tracking(N).prompt_Q,'+');
-%  title(['Navigation constellation plot for channel ' num2str(N)]);
-%  figure;
-%  
-%  plot(GNSS_tracking(N).prompt_Q,'r');
-%  hold on;
-%  plot(GNSS_tracking(N).prompt_I);
-%  title(['Navigation symbols I(red) Q(blue) for channel ' num2str(N)]);
-%  
- figure;
- t=0:length(GNSS_tracking(N).carrier_doppler_hz)-1;
- t=t/1000;
- plot(t,GNSS_tracking(N).carrier_doppler_hz/1000);
- xlabel('Time(s)');ylabel('Doppler(KHz)');title(['Doppler frequency channel ' num2str(N)]);
+    %figure;
+    %plot([GNSS_tracking(N).E,GNSS_tracking(N).P,GNSS_tracking(N).L],'-*');
+    %title(['Early, Prompt, and Late correlator absolute value output for channel ' num2str(N)']);
+    
+    figure;
+    plot(GNSS_tracking(N).prompt_I,GNSS_tracking(N).prompt_Q,'+');
+    title(['Navigation constellation plot for channel ' num2str(N)]);
+    
+    figure;
+    plot(GNSS_tracking(N).prompt_Q,'r');
+    hold on;
+    plot(GNSS_tracking(N).prompt_I);
+    title(['Navigation symbols I(red) Q(blue) for channel ' num2str(N)]);
+   
+    figure;
+    t=0:length(GNSS_tracking(N).carrier_doppler_hz)-1;
+    t=t/1000;
+    plot(t,GNSS_tracking(N).carrier_doppler_hz/1000);
+    xlabel('Time(s)');ylabel('Doppler(KHz)');title(['Doppler frequency channel ' num2str(N)]);
 end
 
 

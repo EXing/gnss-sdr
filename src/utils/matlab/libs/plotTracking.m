@@ -80,8 +80,9 @@ for channelNr = channelList
         ylabel(handles(1, 1), 'Q prompt');
 
         %----- Nav bits ---------------------------------------------------
+        trackResults(channelNr).I_P(length(trackResults(channelNr).I_P)+1 : length(timeAxisInSeconds))=0 
         plot  (handles(1, 2), timeAxisInSeconds, ...
-                              trackResults(channelNr).I_P);
+                              trackResults(channelNr).I_P(1:length(timeAxisInSeconds)));%只画trackResults(channelNr).I_P的1:length(timeAxisInSeconds)部分
 
         grid  (handles(1, 2));
         title (handles(1, 2), 'Bits of the navigation message');
@@ -89,8 +90,9 @@ for channelNr = channelList
         axis  (handles(1, 2), 'tight');
 
         %----- PLL discriminator unfiltered--------------------------------
+        trackResults(channelNr).pllDiscr(length(trackResults(channelNr).pllDiscr)+1 : length(timeAxisInSeconds))=0 
         plot  (handles(2, 1), timeAxisInSeconds, ...
-                              trackResults(channelNr).pllDiscr, 'r');      
+                              trackResults(channelNr).pllDiscr(1:length(timeAxisInSeconds)), 'r');      
 
         grid  (handles(2, 1));
         axis  (handles(2, 1), 'tight');
@@ -99,13 +101,18 @@ for channelNr = channelList
         title (handles(2, 1), 'Raw PLL discriminator');
 
         %----- Correlation ------------------------------------------------
+        trackResults(channelNr).I_E(length(trackResults(channelNr).I_E)+1 : length(timeAxisInSeconds))=0 
+        trackResults(channelNr).Q_E(length(trackResults(channelNr).Q_E)+1 : length(timeAxisInSeconds))=0 
+        trackResults(channelNr).Q_P(length(trackResults(channelNr).Q_P)+1 : length(timeAxisInSeconds))=0 
+        trackResults(channelNr).I_L(length(trackResults(channelNr).I_L)+1 : length(timeAxisInSeconds))=0 
+        trackResults(channelNr).Q_L(length(trackResults(channelNr).Q_L)+1 : length(timeAxisInSeconds))=0 
         plot(handles(2, 2), timeAxisInSeconds, ...
-                            [sqrt(trackResults(channelNr).I_E.^2 + ...
-                                  trackResults(channelNr).Q_E.^2)', ...
-                             sqrt(trackResults(channelNr).I_P.^2 + ...
-                                  trackResults(channelNr).Q_P.^2)', ...
-                             sqrt(trackResults(channelNr).I_L.^2 + ...
-                                  trackResults(channelNr).Q_L.^2)'], ...
+                            [sqrt(trackResults(channelNr).I_E(1:length(timeAxisInSeconds)).^2 + ...
+                                  trackResults(channelNr).Q_E(1:length(timeAxisInSeconds)).^2)', ...
+                             sqrt(trackResults(channelNr).I_P(1:length(timeAxisInSeconds)).^2 + ...
+                                  trackResults(channelNr).Q_P(1:length(timeAxisInSeconds)).^2)', ...
+                             sqrt(trackResults(channelNr).I_L(1:length(timeAxisInSeconds)).^2 + ...
+                                  trackResults(channelNr).Q_L(1:length(timeAxisInSeconds)).^2)'], ...
                             '-*');
 
         grid  (handles(2, 2));
@@ -121,8 +128,9 @@ for channelNr = channelList
         set(hLegend, 'Interpreter', 'Latex');
 
         %----- PLL discriminator filtered----------------------------------
+        trackResults(channelNr).pllDiscrFilt(length(trackResults(channelNr).pllDiscrFilt)+1 : length(timeAxisInSeconds))=0 %add by huangkun
         plot  (handles(3, 1), timeAxisInSeconds, ...
-                              trackResults(channelNr).pllDiscrFilt, 'b');      
+                              trackResults(channelNr).pllDiscrFilt(1:length(timeAxisInSeconds)), 'b');      
 
         grid  (handles(3, 1));
         axis  (handles(3, 1), 'tight');
@@ -131,8 +139,9 @@ for channelNr = channelList
         title (handles(3, 1), 'Filtered PLL discriminator');
 
         %----- DLL discriminator unfiltered--------------------------------
+        trackResults(channelNr).dllDiscr(length(trackResults(channelNr).dllDiscr)+1 : length(timeAxisInSeconds))=0 %add by huangkun
         plot  (handles(3, 2), timeAxisInSeconds, ...
-                              trackResults(channelNr).dllDiscr, 'r');      
+                              trackResults(channelNr).dllDiscr(1:length(timeAxisInSeconds)), 'r');      
 
         grid  (handles(3, 2));
         axis  (handles(3, 2), 'tight');
@@ -141,8 +150,9 @@ for channelNr = channelList
         title (handles(3, 2), 'Raw DLL discriminator');
 
         %----- DLL discriminator filtered----------------------------------
+        trackResults(channelNr).dllDiscrFilt(length(trackResults(channelNr).dllDiscrFilt)+1 : length(timeAxisInSeconds))=0 %add by huangkun
         plot  (handles(3, 3), timeAxisInSeconds, ...
-                              trackResults(channelNr).dllDiscrFilt, 'b');      
+                              trackResults(channelNr).dllDiscrFilt(1:length(timeAxisInSeconds)), 'b');      
 
         grid  (handles(3, 3));
         axis  (handles(3, 3), 'tight');

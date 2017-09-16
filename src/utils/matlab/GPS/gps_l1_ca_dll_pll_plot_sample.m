@@ -29,9 +29,10 @@
 %  */ 
 close all;
 clear all;
-samplingFreq       = 64e6/16;     %[Hz]
+%samplingFreq       = 64e6/16;     %[Hz]
 channels=4;
-path='/home/javier/workspace/gnss-sdr/trunk/install/';
+addpath('/home/qinxin/CLionProjects/gnss-sdr/src/utils/matlab/libs/');
+path='/home/qinxin/CLionProjects/gnss-sdr/tracking_datag/';
 clear PRN_absolute_sample_start;
 for N=1:1:channels
     tracking_log_path=[path 'tracking_ch_' num2str(N-1) '.dat'];

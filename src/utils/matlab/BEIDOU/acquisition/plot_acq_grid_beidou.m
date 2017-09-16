@@ -35,13 +35,13 @@
 
 function plot_acq_grid_gsoc(sat)
 
-path='/Users/enricjuan/code_repos/gnss-sdr/src/tests/data/acquisition_beidou/';
-file=[path 'acquisition_beidou_C_1C_sat_' num2str(sat) '_doppler_0.dat'];
+path='/home/qinxin/Documents/';
+file=[path 'acquisition_beidou_C_6I_sat_' num2str(sat) '_doppler_0.dat'];
 
-sampling_freq_Hz=16.000E6
-Doppler_max_Hz = 4750
-Doppler_min_Hz = -250
-Doppler_step_Hz = 250
+sampling_freq_Hz=4.000E6
+Doppler_max_Hz = 5000
+Doppler_min_Hz = -5000
+Doppler_step_Hz = 60
 
 
 % read files
